@@ -10,6 +10,7 @@ Next.js 16 playground configured with ESLint, Prettier, Tailwind CSS, and Framer
 - ESLint flat config + Prettier for consistent formatting
 - Husky pre-commit hook that runs `format:check`, `lint`, `typecheck`, and a production `build`
 - `next build --webpack` is used to keep builds deterministic inside restricted environments
+- Feature-Sliced Design (FSD) layout over the App Router for scalable composition
 
 ## Development
 
@@ -23,7 +24,20 @@ npm run format:check  # verify formatting without writing changes
 npm run typecheck  # run the TypeScript compiler in noEmit mode
 ```
 
-Framer Motion is already imported inside `src/app/page.tsx`. Add more demos under `src/components` and import them into the page (or route segments) to keep experiments isolated. Husky is wired through the `prepare` script, so after `npm install` the `.husky/pre-commit` hook automatically enforces formatting, linting, type safety, and the production build before a commit can land.
+Framer Motion is already imported inside the widgets/features slices and the App Router composes them from `src/app/page.tsx`. Husky is wired through the `prepare` script, so after `npm install` the `.husky/pre-commit` hook automatically enforces formatting, linting, type safety, and the production build before a commit can land.
+
+## Architecture
+
+```
+src/
+├─ app/              # Next.js App Router entry points
+├─ shared/           # Reusable config, lib helpers, and design tokens
+├─ entities/         # Business entities (e.g., demo cards)
+├─ features/         # User-facing scenarios composed from entities
+├─ widgets/          # Page-level sections composed from features
+```
+
+Add new Framer Motion experiments by creating a slice in `entities/` (data + UI), elevate it through a `features/` interaction, and compose it inside a widget or route segment. This keeps responsibilities localized while still benefiting from the App Router’s layout/streaming features.
 
 ## Deployment
 
