@@ -36,16 +36,13 @@ export default function Home() {
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
           className="space-y-6 text-center sm:text-left"
         >
-          <p className="text-sm uppercase tracking-[0.4em] text-zinc-400">
-            Framer Motion Lab
-          </p>
+          <p className="text-sm uppercase tracking-[0.4em] text-zinc-400">Framer Motion Lab</p>
           <h1 className="text-4xl font-semibold leading-tight sm:text-5xl">
             Rapidly prototype delightful motion inside your Next.js app.
           </h1>
           <p className="text-base leading-relaxed text-zinc-300 sm:text-lg">
-            This playground ships with Framer Motion so you can try interactions,
-            validate easing curves, and copy snippets straight into your
-            production features.
+            This playground ships with Framer Motion so you can try interactions, validate easing
+            curves, and copy snippets straight into your production features.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4 sm:justify-start">
             <Link
@@ -81,9 +78,7 @@ export default function Home() {
               transition={{ type: "spring", stiffness: 180, damping: 16 }}
               className="rounded-3xl border border-white/10 bg-gradient-to-br p-6"
             >
-              <div
-                className={`mb-6 h-12 w-12 rounded-2xl bg-gradient-to-br ${demo.accent}`}
-              />
+              <div className={`mb-6 h-12 w-12 rounded-2xl bg-gradient-to-br ${demo.accent}`} />
               <h2 className="text-xl font-semibold">{demo.title}</h2>
               <p className="mt-2 text-sm text-zinc-300">{demo.description}</p>
             </motion.div>
@@ -96,14 +91,10 @@ export default function Home() {
           transition={{ delay: 0.4, duration: 0.4 }}
           className="rounded-3xl border border-white/10 bg-white/5 p-8 text-center sm:text-left"
         >
-          <p className="text-sm uppercase tracking-[0.3em] text-zinc-300">
-            Tip
-          </p>
+          <p className="text-sm uppercase tracking-[0.3em] text-zinc-300">Tip</p>
           <p className="mt-4 text-lg text-zinc-100">
             Need another motion primitive? Create a component under
-            <code className="mx-2 rounded bg-black/30 px-2 py-1 text-sm">
-              src/components
-            </code>
+            <code className="mx-2 rounded bg-black/30 px-2 py-1 text-sm">src/components</code>
             and import it here to keep the lab tidy.
           </p>
         </motion.div>
