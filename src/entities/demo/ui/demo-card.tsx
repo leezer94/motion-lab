@@ -21,14 +21,15 @@ export function DemoCard({ demo }: { demo: Demo }) {
         rotateX: 4,
         filter: "drop-shadow(0px 25px 60px rgba(15, 23, 42, 0.35))",
       }}
+      style={{ filter: "drop-shadow(0px 0px 0px rgba(15, 23, 42, 0))" }}
       transition={hoverTransition}
     >
       <Card
         tone="glass"
         interactive
-        className="bg-gradient-to-br from-muted/50 via-card to-card text-foreground"
+        className="bg-linear-to-br from-muted/50 via-card to-card text-foreground"
       >
-        <div className={`mb-6 h-12 w-12 rounded-2xl bg-gradient-to-br ${demo.accent}`} />
+        <div className={`mb-6 h-12 w-12 rounded-2xl bg-linear-to-br ${demo.accent}`} />
         <h2 className="text-xl font-semibold">{demoTranslations(`${demo.key}.title`)}</h2>
         <p className="mt-2 text-sm text-muted-foreground">
           {demoTranslations(`${demo.key}.description`)}
