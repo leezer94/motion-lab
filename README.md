@@ -31,13 +31,21 @@ Framer Motion is already imported inside the widgets/features slices and the App
 ```
 src/
 ├─ app/              # Next.js App Router entry points
-├─ shared/           # Reusable config, lib helpers, and design tokens
+├─ shared/           # Reusable config, lib helpers, and non-visual tokens
 ├─ entities/         # Business entities (e.g., demo cards)
 ├─ features/         # User-facing scenarios composed from entities
 ├─ widgets/          # Page-level sections composed from features
+├─ design-system/    # Local UI primitives + tokens that power every slice
 ```
 
 Add new Framer Motion experiments by creating a slice in `entities/` (data + UI), elevate it through a `features/` interaction, and compose it inside a widget or route segment. This keeps responsibilities localized while still benefiting from the App Router’s layout/streaming features.
+
+## Design system workspace
+
+UI primitives that behave like a mini design system live inside `src/design-system`. Import them via
+the `@design-system/*` path alias (`import { Card } from "@design-system";`) so that any slice can
+share the same button, card, and typography styling without moving to a monorepo. Extend this folder
+with additional tokens or components as the app grows—every consumer automatically gets the update.
 
 ## Deployment
 
