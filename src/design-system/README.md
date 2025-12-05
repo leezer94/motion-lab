@@ -10,4 +10,11 @@ Structure:
 - `primitives/` contains foundational building blocks like buttons, cards, and layout helpers.
   Each primitive is ready for both motion-enabled and static scenarios.
 
+### Color tokens
+
+`tokens/colors.ts` exports light/dark palettes that are mirrored as CSS variables inside
+`src/app/globals.css`. Tailwind utilities consume those variables through the inline `@theme`
+definition, so using `bg-background` / `text-foreground` (or the `@design-system` primitives) will
+always stay in sync with the single color source.
+
 Consume the package via the `@design-system/*` path aliases defined in `tsconfig.json`.

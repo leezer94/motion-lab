@@ -47,6 +47,13 @@ the `@design-system/*` path alias (`import { Card } from "@design-system";`) so 
 share the same button, card, and typography styling without moving to a monorepo. Extend this folder
 with additional tokens or components as the app grows—every consumer automatically gets the update.
 
+## Internationalization
+
+`next-intl` powers localized routes under `/[locale]` (`/en`, `/ko`). Messages live in
+`src/i18n/messages/*.json`, the middleware (`middleware.ts`) keeps `/` redirected to the default
+locale, and `[locale]/layout.tsx` loads the correct dictionary via `NextIntlClientProvider`. Add new
+locales by dropping another JSON file + updating `src/i18n/routing.ts`.
+
 ## Deployment
 
 When you're ready, deploy to any platform that supports Next.js (Vercel, Cloudflare, etc.). Make sure to run `npm run build` first to ensure the bundle compiles without errors.

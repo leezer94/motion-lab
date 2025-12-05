@@ -1,3 +1,5 @@
+export * from "./colors";
+
 export const motionLabRadii = {
   none: "0px",
   sm: "0.375rem",

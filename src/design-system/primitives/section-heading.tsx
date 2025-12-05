@@ -1,4 +1,5 @@
 import type { HTMLAttributes } from "react";
+import { Slot } from "@radix-ui/react-slot";
 import { cn } from "../utils/cn";
 
 type HeadingTag = "h1" | "h2" | "h3";
@@ -6,6 +7,7 @@ type HeadingTag = "h1" | "h2" | "h3";
 export interface SectionHeadingProps extends HTMLAttributes<HTMLHeadingElement> {
   size?: "lg" | "xl";
   as?: HeadingTag;
+  asChild?: boolean;
 }
 
 const sizeMap = {
@@ -17,12 +19,14 @@ export function SectionHeading({
   className,
   size = "lg",
   as = "h2",
+  asChild,
   ...props
 }: SectionHeadingProps) {
-  const Component = as;
+  const Component = asChild ? Slot : as;
+
   return (
     <Component
-      className={cn("font-semibold leading-tight text-white", sizeMap[size], className)}
+      className={cn("font-semibold leading-tight text-foreground", sizeMap[size], className)}
       {...props}
     />
   );

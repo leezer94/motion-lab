@@ -1,5 +1,6 @@
 import { forwardRef } from "react";
 import type { ButtonHTMLAttributes } from "react";
+import { Slot } from "@radix-ui/react-slot";
 import { cn } from "../utils/cn";
 
 type ButtonVariant = "primary" | "secondary" | "ghost";
@@ -9,14 +10,13 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
   fullWidth?: boolean;
+  asChild?: boolean;
 }
 
 const variantMap: Record<ButtonVariant, string> = {
-  primary:
-    "bg-white/90 text-zinc-900 hover:bg-white hover:text-zinc-950 focus-visible:ring-white/80",
-  secondary:
-    "border border-white/30 text-white/90 hover:border-white hover:text-white focus-visible:ring-white/40",
-  ghost: "text-white/80 hover:text-white hover:bg-white/10 focus-visible:ring-white/20",
+  primary: "bg-accent text-accent-foreground hover:bg-accent/90 focus-visible:ring-accent/40",
+  secondary: "border border-border text-foreground hover:bg-card focus-visible:ring-border/60",
+  ghost: "text-muted-foreground hover:text-foreground hover:bg-muted focus-visible:ring-border/40",
 };
 
 const sizeMap: Record<ButtonSize, string> = {
@@ -30,7 +30,7 @@ export function buttonStyles({
   fullWidth,
 }: Pick<ButtonProps, "variant" | "size" | "fullWidth"> = {}) {
   return cn(
-    "inline-flex items-center justify-center rounded-full font-medium uppercase tracking-wide transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950",
+    "inline-flex items-center justify-center rounded-full font-medium uppercase tracking-wide transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
     variantMap[variant],
     sizeMap[size],
     fullWidth && "w-full",
@@ -38,11 +38,13 @@ export function buttonStyles({
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { className, variant = "primary", size = "md", fullWidth, ...props },
+  { className, variant = "primary", size = "md", fullWidth, asChild, ...props },
   ref,
 ) {
+  const Component = asChild ? Slot : "button";
+
   return (
-    <button
+    <Component
       ref={ref}
       className={cn(buttonStyles({ variant, size, fullWidth }), className)}
       {...props}

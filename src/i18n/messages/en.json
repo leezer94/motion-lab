@@ -1,0 +1,45 @@
+{
+  "hero": {
+    "kicker": "Motion Lab",
+    "headline": "Rapidly prototype delightful motion inside your Next.js app.",
+    "subheading": "This playground ships with Framer Motion so you can try interactions, validate easing curves, and copy snippets straight into your production features.",
+    "primaryCtaLabel": "Motion Docs",
+    "secondaryCtaLabel": "Next.js Docs"
+  },
+  "tip": {
+    "label": "Tip",
+    "body": {
+      "prefix": "Need another motion primitive? Create a component under",
+      "code": "src/components",
+      "suffix": "(or a feature slice) and import it here to keep the lab tidy."
+    }
+  },
+  "themeToggle": {
+    "lightMode": "Light mode",
+    "darkMode": "Dark mode",
+    "loadingLabel": "Loading theme toggle",
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode"
+  },
+  "languageSwitcher": {
+    "label": "Language",
+    "korean": "한국어",
+    "english": "English",
+    "switchToKorean": "Switch to Korean",
+    "switchToEnglish": "Switch to English"
+  },
+  "demos": {
+    "hoverSprings": {
+      "title": "Hover springs",
+      "description": "Subtle lift/rotate animation for buttons or cards."
+    },
+    "timelineReveal": {
+      "title": "Timeline reveal",
+      "description": "Elements pop into view with a staggered timeline."
+    },
+    "dragConstraints": {
+      "title": "Drag constraints",
+      "description": "Give components boundaries for tactile interactions."
+    }
+  }
+}
