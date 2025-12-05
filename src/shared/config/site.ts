@@ -1,7 +1,7 @@
 export const siteConfig = {
-  label: "Framer Motion Lab",
+  label: "MOTION LAB",
   hero: {
-    kicker: "Framer Motion Lab",
+    kicker: "MOTION LAB",
     headline: "Rapidly prototype delightful motion inside your Next.js app.",
     subheading:
       "This playground ships with Framer Motion so you can try interactions, validate easing curves, and copy snippets straight into your production features.",
