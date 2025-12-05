@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { siteConfig } from "@/shared/config/site";
 
 export function LabTip() {

@@ -8,10 +8,12 @@ export const siteConfig = {
     primaryCta: {
       label: "Motion Docs",
       href: "https://www.framer.com/motion/",
+      target: "_blank",
     },
     secondaryCta: {
       label: "Next.js Docs",
       href: "https://nextjs.org/docs",
+      target: "_blank",
     },
   },
   tip: {
