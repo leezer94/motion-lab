@@ -28,10 +28,25 @@
     "switchToKorean": "한국어로 전환",
     "switchToEnglish": "영어로 전환"
   },
+  "motionLayout": {
+    "overviewLabel": "개요",
+    "overviewHeading": "모션 랩 플레이그라운드",
+    "overviewSubheading": "다른 실험을 고르려면 메인 랩으로 돌아가세요.",
+    "backToHome": "홈으로 돌아가기",
+    "sectionLabel": "랩",
+    "heading": "모션 데모",
+    "subheading": "살펴보고 바로 다듬을 인터랙션을 선택하세요.",
+    "comingSoon": "준비 중",
+    "navSections": {
+      "buttons": "버튼 모션",
+      "timelines": "타임라인",
+      "interactions": "인터랙션"
+    }
+  },
   "demos": {
     "hoverSprings": {
-      "title": "호버 스프링",
-      "description": "버튼이나 카드에 살짝 띄우고 회전하는 애니메이션."
+      "title": "버튼 모션",
+      "description": "버튼 컴포넌트에 적용되는 모션들"
     },
     "timelineReveal": {
       "title": "타임라인 리빌",

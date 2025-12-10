@@ -10,6 +10,18 @@ importers:
       "@radix-ui/react-slot":
         specifier: ^1.2.3
         version: 1.2.3(@types/react@19.2.7)(react@19.2.0)
+      "@tanstack/react-query":
+        specifier: ^5.90.12
+        version: 5.90.12(react@19.2.0)
+      "@tanstack/react-query-devtools":
+        specifier: ^5.91.1
+        version: 5.91.1(@tanstack/react-query@5.90.12(react@19.2.0))(react@19.2.0)
+      jotai:
+        specifier: ^2.16.0
+        version: 2.16.0(@babel/core@7.28.5)(@babel/template@7.27.2)(@types/react@19.2.7)(react@19.2.0)
+      lucide-react:
+        specifier: ^0.557.0
+        version: 0.557.0(react@19.2.0)
       motion:
         specifier: ^12.23.25
         version: 12.23.25(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -53,6 +65,9 @@ importers:
       eslint-config-prettier:
         specifier: ^10.1.8
         version: 10.1.8(eslint@9.39.1(jiti@2.6.1))
+      eslint-plugin-unused-imports:
+        specifier: ^4.3.0
+        version: 4.3.0(@typescript-eslint/eslint-plugin@8.48.1(@typescript-eslint/parser@8.48.1(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))
       husky:
         specifier: ^9.1.7
         version: 9.1.7
@@ -1014,6 +1029,35 @@ packages:
         integrity: sha512-+nKl9N9mN5uJ+M7dBOOCzINw94MPstNR/GtIhz1fpZysxL/4a+No64jCBD6CPN+bIHWFx3KWuu8XJRrj/572Dw==,
       }
 
+  "@tanstack/query-core@5.90.12":
+    resolution:
+      {
+        integrity: sha512-T1/8t5DhV/SisWjDnaiU2drl6ySvsHj1bHBCWNXd+/T+Hh1cf6JodyEYMd5sgwm+b/mETT4EV3H+zCVczCU5hg==,
+      }
+
+  "@tanstack/query-devtools@5.91.1":
+    resolution:
+      {
+        integrity: sha512-l8bxjk6BMsCaVQH6NzQEE/bEgFy1hAs5qbgXl0xhzezlaQbPk6Mgz9BqEg2vTLPOHD8N4k+w/gdgCbEzecGyNg==,
+      }
+
+  "@tanstack/react-query-devtools@5.91.1":
+    resolution:
+      {
+        integrity: sha512-tRnJYwEbH0kAOuToy8Ew7bJw1lX3AjkkgSlf/vzb+NpnqmHPdWM+lA2DSdGQSLi1SU0PDRrrCI1vnZnci96CsQ==,
+      }
+    peerDependencies:
+      "@tanstack/react-query": ^5.90.10
+      react: ^18 || ^19
+
+  "@tanstack/react-query@5.90.12":
+    resolution:
+      {
+        integrity: sha512-graRZspg7EoEaw0a8faiUASCyJrqjKPdqJ9EwuDRUF9mEYJ1YPczI9H+/agJ0mOJkPCJDk0lsz5QTrLZ/jQ2rg==,
+      }
+    peerDependencies:
+      react: ^18 || ^19
+
   "@tybys/wasm-util@0.10.1":
     resolution:
       {
@@ -1864,6 +1908,18 @@ packages:
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9.7
 
+  eslint-plugin-unused-imports@4.3.0:
+    resolution:
+      {
+        integrity: sha512-ZFBmXMGBYfHttdRtOG9nFFpmUvMtbHSjsKrS20vdWdbfiVYsO3yA2SGYy9i9XmZJDfMGBflZGBCm70SEnFQtOA==,
+      }
+    peerDependencies:
+      "@typescript-eslint/eslint-plugin": ^8.0.0-0 || ^7.0.0 || ^6.0.0 || ^5.0.0
+      eslint: ^9.0.0 || ^8.0.0
+    peerDependenciesMeta:
+      "@typescript-eslint/eslint-plugin":
+        optional: true
+
   eslint-scope@8.4.0:
     resolution:
       {
@@ -2464,6 +2520,27 @@ packages:
       }
     hasBin: true
 
+  jotai@2.16.0:
+    resolution:
+      {
+        integrity: sha512-NmkwPBet0SHQ28GBfEb10sqnbVOYyn6DL4iazZgGRDUKxSWL0iqcm+IK4TqTSFC2ixGk+XX2e46Wbv364a3cKg==,
+      }
+    engines: { node: ">=12.20.0" }
+    peerDependencies:
+      "@babel/core": ">=7.0.0"
+      "@babel/template": ">=7.0.0"
+      "@types/react": ">=17.0.0"
+      react: ">=17.0.0"
+    peerDependenciesMeta:
+      "@babel/core":
+        optional: true
+      "@babel/template":
+        optional: true
+      "@types/react":
+        optional: true
+      react:
+        optional: true
+
   js-tokens@4.0.0:
     resolution:
       {
@@ -2686,6 +2763,14 @@ packages:
       {
         integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==,
       }
+
+  lucide-react@0.557.0:
+    resolution:
+      {
+        integrity: sha512-x6LrJAuYGywdjH4rBgI8ygWnCsn8GTvS9/BhSORNWsuv3LNLV39ZOUg6UTJa9nFUl0fHY8bytDSThH12pNHyLQ==,
+      }
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   magic-string@0.30.21:
     resolution:
@@ -4060,6 +4145,21 @@ snapshots:
       postcss: 8.5.6
       tailwindcss: 4.1.17
 
+  "@tanstack/query-core@5.90.12": {}
+
+  "@tanstack/query-devtools@5.91.1": {}
+
+  "@tanstack/react-query-devtools@5.91.1(@tanstack/react-query@5.90.12(react@19.2.0))(react@19.2.0)":
+    dependencies:
+      "@tanstack/query-devtools": 5.91.1
+      "@tanstack/react-query": 5.90.12(react@19.2.0)
+      react: 19.2.0
+
+  "@tanstack/react-query@5.90.12(react@19.2.0)":
+    dependencies:
+      "@tanstack/query-core": 5.90.12
+      react: 19.2.0
+
   "@tybys/wasm-util@0.10.1":
     dependencies:
       tslib: 2.8.1
@@ -4718,6 +4818,12 @@ snapshots:
       string.prototype.matchall: 4.0.12
       string.prototype.repeat: 1.0.0
 
+  eslint-plugin-unused-imports@4.3.0(@typescript-eslint/eslint-plugin@8.48.1(@typescript-eslint/parser@8.48.1(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1)):
+    dependencies:
+      eslint: 9.39.1(jiti@2.6.1)
+    optionalDependencies:
+      "@typescript-eslint/eslint-plugin": 8.48.1(@typescript-eslint/parser@8.48.1(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
+
   eslint-scope@8.4.0:
     dependencies:
       esrecurse: 4.3.0
@@ -5090,6 +5196,13 @@ snapshots:
 
   jiti@2.6.1: {}
 
+  jotai@2.16.0(@babel/core@7.28.5)(@babel/template@7.27.2)(@types/react@19.2.7)(react@19.2.0):
+    optionalDependencies:
+      "@babel/core": 7.28.5
+      "@babel/template": 7.27.2
+      "@types/react": 19.2.7
+      react: 19.2.0
+
   js-tokens@4.0.0: {}
 
   js-yaml@4.1.1:
@@ -5194,6 +5307,10 @@ snapshots:
   lru-cache@5.1.1:
     dependencies:
       yallist: 3.1.1
+
+  lucide-react@0.557.0(react@19.2.0):
+    dependencies:
+      react: 19.2.0
 
   magic-string@0.30.21:
     dependencies:

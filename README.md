@@ -1,4 +1,4 @@
-# Framer Motion Examples
+# Motion Lab
 
 Next.js 16 playground configured with ESLint, Prettier, Tailwind CSS, and Framer Motion so you can iterate on motion experiments quickly. Husky automates the pre-commit workflow so every change ships linted, type-safe, and build-ready.
 

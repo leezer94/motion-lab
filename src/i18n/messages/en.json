@@ -28,10 +28,25 @@
     "switchToKorean": "Switch to Korean",
     "switchToEnglish": "Switch to English"
   },
+  "motionLayout": {
+    "overviewLabel": "Overview",
+    "overviewHeading": "Motion Lab playground",
+    "overviewSubheading": "Jump back to the main lab to pick another experiment.",
+    "backToHome": "Back to home",
+    "sectionLabel": "Lab",
+    "heading": "Motion demos",
+    "subheading": "Pick an interaction to explore and fine-tune live.",
+    "comingSoon": "Soon",
+    "navSections": {
+      "buttons": "Button motions",
+      "timelines": "Timeline reveals",
+      "interactions": "Drag interactions"
+    }
+  },
   "demos": {
     "hoverSprings": {
-      "title": "Hover springs",
-      "description": "Subtle lift/rotate animation for buttons or cards."
+      "title": "Button Motion",
+      "description": "Motions applies to Button Component"
     },
     "timelineReveal": {
       "title": "Timeline reveal",
