@@ -31,7 +31,7 @@ export const motionNavSections: MotionNavSection[] = [
       {
         slug: "timeline-reveal",
         translationKey: "timelineReveal",
-        isAvailable: false,
+        isAvailable: true,
       },
     ],
   },

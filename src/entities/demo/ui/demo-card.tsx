@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import { Card } from "@design-system";
-import type { Demo } from "../model/demos";
+import type { Demo, DemoTranslationKey } from "../model/demos";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/navigation";
 
@@ -12,9 +12,16 @@ const hoverTransition = {
   damping: 16,
 };
 
+const demoRouteMap: Record<DemoTranslationKey, string> = {
+  hoverSprings: "button",
+  timelineReveal: "timeline-reveal",
+  dragConstraints: "button",
+};
+
 export function DemoCard({ demo }: { demo: Demo }) {
   const demoTranslations = useTranslations("demos");
   const locale = useLocale();
+  const href = `/motions/${demoRouteMap[demo.key] ?? "button"}`;
 
   return (
     <motion.div
@@ -27,7 +34,7 @@ export function DemoCard({ demo }: { demo: Demo }) {
       style={{ filter: "drop-shadow(0px 0px 0px rgba(15, 23, 42, 0))" }}
       transition={hoverTransition}
     >
-      <Link href="/motions/button" locale={locale}>
+      <Link href={href} locale={locale}>
         <Card
           tone="glass"
           interactive
