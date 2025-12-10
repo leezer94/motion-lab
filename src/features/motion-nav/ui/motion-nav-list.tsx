@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Link } from "@/navigation";
 import { cn } from "@/design-system/utils/cn";
 import { ChevronDown } from "@/shared/icons";
+import { useMotionNavStore } from "../model/motion-nav-store";
 
 export type MotionNavListItem = {
   key: string;
@@ -26,32 +27,27 @@ type MotionNavListProps = {
 };
 
 export function MotionNavList({ sections }: MotionNavListProps) {
-  const [openSections, setOpenSections] = useState<Record<string, boolean>>(() => {
-    const defaults: Record<string, boolean> = {};
-    sections.forEach((section) => {
-      defaults[section.key] = false;
-    });
-    return defaults;
-  });
+  const openSections = useMotionNavStore((state) => state.openSections);
+  const initializeSections = useMotionNavStore((state) => state.initializeSections);
+  const toggleSection = useMotionNavStore((state) => state.toggleSection);
 
-  const toggleSection = (key: string) => {
-    setOpenSections((prev) => ({
-      ...prev,
-      [key]: !(prev[key] ?? false),
-    }));
-  };
+  useEffect(() => {
+    initializeSections(sections.map((section) => section.key));
+  }, [sections, initializeSections]);
 
   return (
     <nav className="mt-6 flex flex-col gap-4">
       {sections.map((section) => {
         const isOpen = openSections[section.key] ?? false;
+        const contentId = `motion-nav-panel-${section.key}`;
         return (
           <div key={section.key}>
             <button
               type="button"
               onClick={() => toggleSection(section.key)}
               className="flex w-full items-center justify-between rounded-2xl border border-transparent px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-muted-foreground transition-colors hover:text-foreground"
-              // aria-expanded={isOpen}
+              aria-expanded={isOpen ? "true" : "false"}
+              aria-controls={contentId}
             >
               <span>{section.label}</span>
               <ChevronDown
@@ -64,6 +60,7 @@ export function MotionNavList({ sections }: MotionNavListProps) {
             <AnimatePresence initial={false}>
               {isOpen ? (
                 <motion.div
+                  id={contentId}
                   initial="collapsed"
                   animate="open"
                   exit="collapsed"

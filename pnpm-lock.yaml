@@ -16,9 +16,6 @@ importers:
       "@tanstack/react-query-devtools":
         specifier: ^5.91.1
         version: 5.91.1(@tanstack/react-query@5.90.12(react@19.2.0))(react@19.2.0)
-      jotai:
-        specifier: ^2.16.0
-        version: 2.16.0(@babel/core@7.28.5)(@babel/template@7.27.2)(@types/react@19.2.7)(react@19.2.0)
       lucide-react:
         specifier: ^0.557.0
         version: 0.557.0(react@19.2.0)
@@ -37,6 +34,9 @@ importers:
       react-dom:
         specifier: 19.2.0
         version: 19.2.0(react@19.2.0)
+      zustand:
+        specifier: ^5.0.9
+        version: 5.0.9(@types/react@19.2.7)(react@19.2.0)
     devDependencies:
       "@formatjs/icu-messageformat-parser":
         specifier: ^2.11.4
@@ -2520,27 +2520,6 @@ packages:
       }
     hasBin: true
 
-  jotai@2.16.0:
-    resolution:
-      {
-        integrity: sha512-NmkwPBet0SHQ28GBfEb10sqnbVOYyn6DL4iazZgGRDUKxSWL0iqcm+IK4TqTSFC2ixGk+XX2e46Wbv364a3cKg==,
-      }
-    engines: { node: ">=12.20.0" }
-    peerDependencies:
-      "@babel/core": ">=7.0.0"
-      "@babel/template": ">=7.0.0"
-      "@types/react": ">=17.0.0"
-      react: ">=17.0.0"
-    peerDependenciesMeta:
-      "@babel/core":
-        optional: true
-      "@babel/template":
-        optional: true
-      "@types/react":
-        optional: true
-      react:
-        optional: true
-
   js-tokens@4.0.0:
     resolution:
       {
@@ -3629,6 +3608,27 @@ packages:
       {
         integrity: sha512-AvvthqfqrAhNH9dnfmrfKzX5upOdjUVJYFqNSlkmGf64gRaTzlPwz99IHYnVs28qYAybvAlBV+H7pn0saFY4Ig==,
       }
+
+  zustand@5.0.9:
+    resolution:
+      {
+        integrity: sha512-ALBtUj0AfjJt3uNRQoL1tL2tMvj6Gp/6e39dnfT6uzpelGru8v1tPOGBzayOWbPJvujM8JojDk3E1LxeFisBNg==,
+      }
+    engines: { node: ">=12.20.0" }
+    peerDependencies:
+      "@types/react": ">=18.0.0"
+      immer: ">=9.0.6"
+      react: ">=18.0.0"
+      use-sync-external-store: ">=1.2.0"
+    peerDependenciesMeta:
+      "@types/react":
+        optional: true
+      immer:
+        optional: true
+      react:
+        optional: true
+      use-sync-external-store:
+        optional: true
 
 snapshots:
   "@alloc/quick-lru@5.2.0": {}
@@ -5196,13 +5196,6 @@ snapshots:
 
   jiti@2.6.1: {}
 
-  jotai@2.16.0(@babel/core@7.28.5)(@babel/template@7.27.2)(@types/react@19.2.7)(react@19.2.0):
-    optionalDependencies:
-      "@babel/core": 7.28.5
-      "@babel/template": 7.27.2
-      "@types/react": 19.2.7
-      react: 19.2.0
-
   js-tokens@4.0.0: {}
 
   js-yaml@4.1.1:
@@ -5934,3 +5927,8 @@ snapshots:
       zod: 4.1.13
 
   zod@4.1.13: {}
+
+  zustand@5.0.9(@types/react@19.2.7)(react@19.2.0):
+    optionalDependencies:
+      "@types/react": 19.2.7
+      react: 19.2.0

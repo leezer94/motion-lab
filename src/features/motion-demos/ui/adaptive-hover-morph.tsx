@@ -3,9 +3,8 @@
 import { useMemo, useState } from "react";
 import { motion } from "motion/react";
 import { cn } from "@/design-system/utils/cn";
-import { MotionLivePreview } from "../../_components/preview/motion-live-preview";
-import { MotionControlPanel } from "../../_components/controls/motion-control-panel";
-import { MotionControlSlider } from "../../_components/controls/motion-control-slider";
+import { MotionLivePreview } from "@/widgets/motion-preview";
+import { MotionControlPanel, MotionControlSlider } from "@/features/motion-controls";
 import { ArrowRight, Rocket } from "@/shared/icons";
 
 const BUTTON_HEIGHT = 64;

@@ -1,6 +1,6 @@
 "use client";
 
-import { MotionNavList, type MotionNavListSection } from "./motion-nav-list";
+import { MotionNavList, type MotionNavListSection } from "@/features/motion-nav";
 
 type MotionSidebarProps = {
   copy: {

@@ -1,5 +1,5 @@
-import { AdaptiveHoverMorph } from "./_components/adaptive-hover-morph";
-import { MotionDetailHeader } from "../_components/detail/motion-detail-header";
+import { AdaptiveHoverMorph } from "@/features/motion-demos";
+import { MotionDetailHeader } from "@/widgets/motion-detail";
 
 export default function ButtonMotion() {
   return (
