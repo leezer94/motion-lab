@@ -37,10 +37,10 @@ export function EcologyMatrix() {
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_0.8fr]">
       <MotionLivePreview
-        label="Cannabis ecology carousel"
+        label="Orchid ecology carousel"
         footer={
           <p>
-            Hover or tap a cultivar tile to expand its terpene story, then cycle to feel how canopy,
+            Hover or tap an orchid tile to expand its staging story, then cycle to feel how canopy,
             understory, and floor cues might translate into your motion stack.
           </p>
         }
@@ -78,7 +78,7 @@ export function EcologyMatrix() {
       </MotionLivePreview>
       <MotionControlPanel
         title="Narrative cues"
-        description="Map terpene-inspired cues to your UI tokens and align hover stories with cultivar moods."
+        description="Map fragrance-inspired cues to your UI tokens and align hover stories with bloom moods."
       >
         {isLoading ? <NarrativeSkeleton /> : <NarrativeDetails specimen={activeSpecimen} />}
       </MotionControlPanel>
@@ -140,19 +140,17 @@ function NarrativeDetails({ specimen }: { specimen: SpecimenCard }) {
         <dl className="space-y-4 text-foreground">
           <div>
             <dt className="text-[11px] font-semibold uppercase tracking-[0.35em] text-emerald-300">
-              Terpene blend
+              Fragrance accord
             </dt>
-            <dd className="mt-1 text-base">{specimen.terpeneProfile}</dd>
+            <dd className="mt-1 text-base">{specimen.fragranceProfile}</dd>
           </div>
           <div>
             <dt className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Profile</dt>
             <dd className="mt-1 text-sm">{specimen.profile}</dd>
           </div>
           <div>
-            <dt className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-              Narrative cue
-            </dt>
-            <dd className="mt-1 text-sm">{specimen.effectCue}</dd>
+            <dt className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Mood cue</dt>
+            <dd className="mt-1 text-sm">{specimen.moodCue}</dd>
           </div>
           <div>
             <dt className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
@@ -178,7 +176,7 @@ function NarrativeDetails({ specimen }: { specimen: SpecimenCard }) {
         ) : null}
       </div>
       <p className="text-xs text-muted-foreground/80">
-        Highlight one cultivar at a time. Adjacent cards preview upcoming moods so the team can
+        Highlight one orchid at a time. Adjacent cards preview upcoming moods so the team can
         rehearse tempo shifts without cognitive overload. Once a narrative sticks, reuse the same
         pacing inside hover, drag, and modal tokens.
       </p>

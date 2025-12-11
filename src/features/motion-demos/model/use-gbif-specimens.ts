@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { useApiQuery } from "@/shared/api";
-import { CANNABIS_IMAGE_QUERY_KEY, GBIF_SPECIES_QUERY_KEY } from "./query-keys";
+import { ORCHID_IMAGE_QUERY_KEY, GBIF_SPECIES_QUERY_KEY } from "./query-keys";
 
 type GbifSpecies = {
   key: number;
@@ -28,101 +28,101 @@ type UnsplashGalleryResponse = {
   results: SpecimenImage[];
 };
 
-type CannabisNarrative = {
+type OrchidNarrative = {
   displayName: string;
   region: string;
   accent: string;
   profile: string;
   notes: string;
-  terpeneProfile: string;
-  effectCue: string;
+  fragranceProfile: string;
+  moodCue: string;
 };
 
-const cannabisNarratives: CannabisNarrative[] = [
+const orchidNarratives: OrchidNarrative[] = [
   {
-    displayName: "Solar Mist Cultivar",
-    region: "Desert greenhouse canopy",
+    displayName: "Aurora Phalaenopsis",
+    region: "Mist cooled atriums",
     accent: "from-emerald-400/60 to-teal-500/40",
-    profile: "Citrus-first vapor trail",
-    notes: "Bright terpene spray that pops for hero transitions or onboarding reveals.",
-    terpeneProfile: "Limonene · Caryophyllene",
-    effectCue: "Uplifted focus",
+    profile: "Ribboned petal stretch",
+    notes: "Use for hero CTAs that unfurl as the user pauses on them.",
+    fragranceProfile: "Green tea · Lemongrass",
+    moodCue: "Fresh clarity",
   },
   {
-    displayName: "Obsidian Kush Array",
-    region: "Night-cooled indoor racks",
+    displayName: "Lunar Widow Orchid",
+    region: "Night-lit conservatories",
     accent: "from-sky-500/60 to-indigo-500/40",
-    profile: "Velvet low-end swell",
-    notes: "Ground CTA hover states with a deep violet pulse.",
-    terpeneProfile: "Myrcene · Nerolidol",
-    effectCue: "Slow depth",
+    profile: "Velvet halo pulse",
+    notes: "Grounds nighttime dashboards with a moody glow.",
+    fragranceProfile: "Violet · Bergamot",
+    moodCue: "Calm focus",
   },
   {
-    displayName: "Amber Resin Hybrid",
-    region: "Terraced hillside beds",
+    displayName: "Amber Crest Oncidium",
+    region: "Terraced thermal beds",
     accent: "from-amber-500/60 to-orange-500/40",
-    profile: "Spiced midtones",
-    notes: "Use for scroll markers that glide through archival timelines.",
-    terpeneProfile: "Caryophyllene · Humulene",
-    effectCue: "Warm cadence",
+    profile: "Sequenced sunburst",
+    notes: "Pair with timeline markers that hop between eras.",
+    fragranceProfile: "Honey · Clove",
+    moodCue: "Golden cadence",
   },
   {
-    displayName: "Rosin Bloom Microbatch",
+    displayName: "Rosette Jewel Orchid",
     region: "Microclimate lab benches",
     accent: "from-rose-500/60 to-fuchsia-500/40",
-    profile: "Petal-soft intro cue",
-    notes: "Wrap modal entrances with a bloom that feels bespoke.",
-    terpeneProfile: "Linalool · Ocimene",
-    effectCue: "Airy shimmer",
+    profile: "Silk bloom intro",
+    notes: "Perfect for modal entrances or onboarding cards.",
+    fragranceProfile: "Lychee · Magnolia",
+    moodCue: "Soft arrival",
   },
   {
-    displayName: "Verdant Coast Sativa",
-    region: "Pacific fog plains",
+    displayName: "Verdant Coast Cymbidium",
+    region: "Coastal fog plains",
     accent: "from-lime-500/60 to-emerald-500/40",
     profile: "Glassine highlight wash",
-    notes: "Pairs with light-mode hero gradients that need polish.",
-    terpeneProfile: "Pinene · Terpinolene",
-    effectCue: "Coastal clarity",
+    notes: "Give light-mode hero gradients extra polish.",
+    fragranceProfile: "Sea salt · Pine",
+    moodCue: "Tidal ease",
   },
   {
-    displayName: "Glacier Breath Phenotype",
-    region: "Hydroponic arctic dome",
+    displayName: "Glacier Drift Dendrobium",
+    region: "Cryogenic grow domes",
     accent: "from-cyan-500/60 to-blue-500/40",
-    profile: "Icy vapor sweep",
-    notes: "Great for frosted stats or KPI stacks with halation.",
-    terpeneProfile: "Eucalyptol · Bisabolol",
-    effectCue: "Cooling relief",
+    profile: "Frosted vapor sweep",
+    notes: "Great for stats blocks that need crystalline depth.",
+    fragranceProfile: "Eucalyptus · Mint",
+    moodCue: "Cooling relief",
   },
   {
-    displayName: "Lumen Stack Indica",
+    displayName: "Lumen Stack Cattleya",
     region: "Subterranean LED arrays",
     accent: "from-purple-500/60 to-violet-500/40",
     profile: "Crushed berry trail",
-    notes: "Softens offboarding flows with luxe afterglow.",
-    terpeneProfile: "Myrcene · Linalool",
-    effectCue: "Evening settle",
+    notes: "Softens offboarding flows with plush afterglow.",
+    fragranceProfile: "Berry · Musk",
+    moodCue: "Evening settle",
   },
   {
-    displayName: "Canopy Drift Blend",
+    displayName: "Canopy Drift Vanda",
     region: "Equatorial canopy labs",
     accent: "from-green-500/60 to-emerald-400/40",
-    profile: "Lush fade cushion",
-    notes: "Ideal for dense editorial spreads that need breathing room.",
-    terpeneProfile: "Farnesene · Valencene",
-    effectCue: "Floating calm",
+    profile: "Suspended bloom cushion",
+    notes: "Ideal for dense editorial spreads needing breathing room.",
+    fragranceProfile: "Fern · Citrus",
+    moodCue: "Floating calm",
   },
   {
-    displayName: "Sunstone Hash Draft",
+    displayName: "Sunstone Paphiopedilum",
     region: "High-altitude drying lofts",
     accent: "from-orange-500/60 to-red-500/40",
     profile: "Charred sugar spark",
     notes: "Inject energy into CTA strips or carousel endcaps.",
-    terpeneProfile: "Geraniol · Caryophyllene",
-    effectCue: "Bold ignition",
+    fragranceProfile: "Amber · Sandalwood",
+    moodCue: "Bold ignition",
   },
 ];
 
-const CANNABIS_QUERY = "cannabis";
+const ORCHID_QUERY = "orchid";
 
 export type SpecimenCard = {
   id: string;
@@ -132,8 +132,8 @@ export type SpecimenCard = {
   accent: string;
   profile: string;
   notes: string;
-  terpeneProfile: string;
-  effectCue: string;
+  fragranceProfile: string;
+  moodCue: string;
   image?: SpecimenImage;
 };
 
@@ -142,7 +142,7 @@ export function useGbifSpecimens() {
     queryKey: GBIF_SPECIES_QUERY_KEY,
     request: {
       url: `https://api.gbif.org/v1/species/search?q=${encodeURIComponent(
-        CANNABIS_QUERY,
+        ORCHID_QUERY,
       )}&rank=species&limit=9`,
       cache: "no-store",
     },
@@ -150,29 +150,29 @@ export function useGbifSpecimens() {
   });
 
   const galleryQuery = useApiQuery<UnsplashGalleryResponse>({
-    queryKey: CANNABIS_IMAGE_QUERY_KEY,
+    queryKey: ORCHID_IMAGE_QUERY_KEY,
     request: {
-      url: "/api/unsplash/cannabis",
+      url: "/api/unsplash/orchids",
     },
     staleTime: 1000 * 60 * 60,
     refetchOnWindowFocus: false,
   });
 
   const cards = useMemo<SpecimenCard[]>(() => {
-    return cannabisNarratives.map((narrative, index) => {
+    return orchidNarratives.map((narrative, index) => {
       const species = speciesQuery.data?.results?.[index];
       const image = galleryQuery.data?.results?.[index];
 
       return {
-        id: species?.key ? String(species.key) : `cannabis-${index}`,
+        id: species?.key ? String(species.key) : `orchid-${index}`,
         name: species?.canonicalName ?? species?.scientificName ?? narrative.displayName,
-        family: species?.family ?? "Cannabaceae",
+        family: species?.family ?? "Orchidaceae",
         region: narrative.region,
         accent: narrative.accent,
         profile: narrative.profile,
         notes: narrative.notes,
-        terpeneProfile: narrative.terpeneProfile,
-        effectCue: narrative.effectCue,
+        fragranceProfile: narrative.fragranceProfile,
+        moodCue: narrative.moodCue,
         image,
       };
     });

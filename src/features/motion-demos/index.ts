@@ -7,4 +7,7 @@ export {
   motionDemoRegistry,
   getMotionDemoByParams,
   getMotionDemoPathByTranslationKey,
+  getMotionDemoHref,
+  getMotionDemoHrefBySlug,
+  buildMotionDemoSlug,
 } from "./model/motion-demo-registry";

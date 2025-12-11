@@ -40,6 +40,24 @@ src/
 
 Add new Framer Motion experiments by creating a slice in `entities/` (data + UI), elevate it through a `features/` interaction, and compose it inside a widget or route segment. This keeps responsibilities localized while still benefiting from the App Router’s layout/streaming features.
 
+### Shared utilities to know about
+
+- `widgets/global-toolbar` exposes a reusable toolbar (`ThemeToggle`, `LanguageSwitcher`, optional "back home" link) that both the home route and motion playground consume. Drop it into any other route to keep the global controls consistent.
+- `features/motion-demos/model/motion-demo-registry.ts` now exports helpers such as `getMotionDemoHref` so every nav item, CTA, or card can build canonical motion URLs with a single function.
+- `features/motion-nav/lib/use-motion-nav-controls.ts` wraps the zustand store behind a hook that initializes sections and handles active-state syncing automatically.
+- `shared/api/hooks/use-api-infinite-query.ts` mirrors `useApiQuery` but for paginated endpoints—pass `queryKey`, `initialPageParam`, `getNextPageParam`, and either a static `ApiFetchRequest` or a function that receives `pageParam`.
+- `app/api/unsplash/orchids/route.ts` is a minimal proxy that fetches curated orchid imagery from Unsplash so the Ecology Matrix demo has reliable visuals without exposing API keys to the client.
+
+### Environment variables
+
+Create an `.env.local` in the repo root with any sensitive keys. The Ecology Matrix demo expects:
+
+```
+UNSPLASH_ACCESS_KEY=your_key_here
+```
+
+Without it the server route will fall back to the static specimens baked into the registry.
+
 ## Design system workspace
 
 UI primitives that behave like a mini design system live inside `src/design-system`. Import them via

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 const UNSPLASH_ENDPOINT = "https://api.unsplash.com/search/photos";
-const DEFAULT_QUERY = "cannabis plant macro";
+const DEFAULT_QUERY = "orchid botanical macro";
 const RESULTS_PER_PAGE = 9;
 
 type UnsplashPhoto = {
@@ -43,7 +43,7 @@ export async function GET() {
       Authorization: `Client-ID ${accessKey}`,
       "Accept-Version": "v1",
     },
-    next: { revalidate: 60 * 60 }, // cache for one hour on the server
+    next: { revalidate: 60 * 60 },
   });
 
   if (!response.ok) {
@@ -57,7 +57,7 @@ export async function GET() {
 
   const normalized = data.results.map((photo) => ({
     id: photo.id,
-    alt: photo.alt_description ?? "Cannabis specimen detail",
+    alt: photo.alt_description ?? "Orchid specimen detail",
     src: photo.urls.small,
     photographer: photo.user.name,
     link: photo.links.html,
