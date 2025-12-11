@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { useApiQuery } from "@/shared/api";
+import { GBIF_SPECIES_QUERY_KEY } from "./query-keys";
 
 type GbifSpecies = {
   key: number;
@@ -39,7 +40,7 @@ export type SpecimenCard = {
 
 export function useGbifSpecimens(query: string = DEFAULT_QUERY) {
   const response = useApiQuery<GbifSpeciesResponse>({
-    queryKey: ["gbif-species", query],
+    queryKey: [...GBIF_SPECIES_QUERY_KEY, query],
     request: {
       url: `https://api.gbif.org/v1/species/search?q=${encodeURIComponent(query)}&rank=species&limit=9`,
       cache: "no-store",

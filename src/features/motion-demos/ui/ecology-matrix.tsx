@@ -1,39 +1,11 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "motion/react";
 import { MotionLivePreview } from "@/widgets/motion-preview";
 import { MotionControlPanel } from "@/features/motion-controls";
 import { cn } from "@/design-system/utils/cn";
 import { useGbifSpecimens, type SpecimenCard } from "../model/use-gbif-specimens";
-
-type EcologyZone = {
-  key: string;
-  label: string;
-  description: string;
-  gradient: string;
-};
-
-const ecologyZones: EcologyZone[] = [
-  {
-    key: "canopy",
-    label: "Canopy stratum",
-    description: "Humid air, filtered light, epiphytes thrive.",
-    gradient: "from-emerald-500/20 to-sky-500/20",
-  },
-  {
-    key: "understory",
-    label: "Understory belt",
-    description: "Dappled light and rich soils for broad leaves.",
-    gradient: "from-amber-500/20 to-rose-500/20",
-  },
-  {
-    key: "ground",
-    label: "Forest floor",
-    description: "Shade tolerant climbers and mossy anchors.",
-    gradient: "from-indigo-500/20 to-purple-500/20",
-  },
-];
 
 const fallbackSpecimens: SpecimenCard[] = [
   {
@@ -104,138 +76,188 @@ const fallbackSpecimens: SpecimenCard[] = [
 export function EcologyMatrix() {
   const { cards, isLoading, error } = useGbifSpecimens();
   const dataset = cards?.length ? cards : fallbackSpecimens;
+  const [activeIndex, setActiveIndex] = useState(0);
+  const normalizedIndex = ((activeIndex % dataset.length) + dataset.length) % dataset.length;
 
-  const zoneBuckets = useMemo(() => {
-    return ecologyZones.map((zone, zoneIndex) => {
-      const specimens = dataset
-        .filter(Boolean)
-        .filter((specimen, index) => specimen && index % ecologyZones.length === zoneIndex);
+  useEffect(() => {
+    console.log(cards, "cards");
+  }, [cards]);
 
-      return {
-        zone,
-        specimens,
-      };
+  const carouselItems = useMemo(() => {
+    const total = dataset.length;
+    const half = Math.floor(total / 2);
+    return dataset.map((specimen, index) => {
+      let relative = index - normalizedIndex;
+      if (relative > half) relative -= total;
+      if (relative < -half) relative += total;
+      return { specimen, relative, index };
     });
-  }, [dataset]);
+  }, [dataset, normalizedIndex]);
+
+  const handleCarouselChange = (direction: -1 | 1) => {
+    setActiveIndex((prev) => prev + direction);
+  };
 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_0.8fr]">
       <MotionLivePreview
-        label="Ecology matrix"
+        label="Ecology carousel"
         footer={
           <p>
-            Specimens are distributed across canopy, understory, and forest floor to map potential
-            placement before choreographing motion accents.
+            Hover a specimen to expand its description, then flip through the carousel to plan how
+            canopy, understory, and floor stories should flow.
           </p>
         }
         className="h-full"
-        contentClassName="bg-slate-950/30 p-0"
+        contentClassName="bg-slate-950/40 p-0"
       >
-        <div className="flex h-full w-full flex-col gap-3 rounded-[32px] p-6">
-          {zoneBuckets.map(({ zone, specimens }) => (
-            <section
-              key={zone.key}
-              className={cn(
-                "rounded-3xl border border-white/5 bg-slate-950/50 px-5 py-4 shadow-[0_12px_40px_rgba(8,10,35,0.35)]",
-                "flex flex-col gap-4",
-              )}
-            >
-              <header className="flex items-baseline justify-between">
-                <div>
-                  <p className="text-[11px] uppercase tracking-[0.35em] text-slate-400">
-                    {zone.label}
-                  </p>
-                  <p className="text-sm text-slate-300">{zone.description}</p>
-                </div>
-                <div
-                  className={cn(
-                    "h-8 w-8 rounded-2xl border border-white/10 bg-gradient-to-br",
-                    zone.gradient,
-                  )}
-                  aria-hidden="true"
+        <div className="relative flex h-[360px] w-full items-center justify-center overflow-hidden rounded-[32px]">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.15),_rgba(15,23,42,0.85))]" />
+          <div className="relative z-10 flex h-full w-full items-center justify-center">
+            {isLoading ? (
+              <CarouselSkeleton />
+            ) : (
+              carouselItems.map(({ specimen, relative, index }) => (
+                <SpecimenCard
+                  key={specimen.id}
+                  specimen={specimen}
+                  relativePosition={relative}
+                  isActive={relative === 0}
+                  onSelect={() => setActiveIndex(index)}
                 />
-              </header>
-              <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
-                {isLoading && specimens.length === 0 ? (
-                  <MatrixSkeleton />
-                ) : (
-                  specimens.map((specimen) => (
-                    <SpecimenCard key={specimen.id} specimen={specimen} zone={zone} />
-                  ))
-                )}
-              </div>
-            </section>
-          ))}
+              ))
+            )}
+          </div>
+          <div className="absolute inset-x-0 bottom-5 z-20 flex items-center justify-center gap-3">
+            <CarouselButton label="Previous specimen" onClick={() => handleCarouselChange(-1)} />
+            <CarouselButton label="Next specimen" onClick={() => handleCarouselChange(1)} />
+          </div>
           {error ? (
-            <p className="rounded-2xl border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-100">
+            <p className="absolute bottom-5 left-5 z-20 rounded-2xl border border-rose-500/40 bg-rose-500/10 px-4 py-2 text-xs text-rose-100">
               Failed to load live specimens, showing fallback taxonomy.
             </p>
           ) : null}
         </div>
       </MotionLivePreview>
       <MotionControlPanel
-        title="Matrix insights"
-        description="Use this spatial grouping to decide where to anchor transitions or progressive disclosure."
+        title="Narrative cues"
+        description="Use this carousel to decide how to pace reveals and where to anchor motion accents."
       >
-        <ul className="space-y-4 text-sm text-muted-foreground">
-          <li>
-            <span className="font-semibold text-foreground">Canopy</span> – Use diffused glows and
-            gentle parallax to mimic high humidity.
-          </li>
-          <li>
-            <span className="font-semibold text-foreground">Understory</span> – Cards can slide from
-            the side like leaves unfolding, referencing lateral growth.
-          </li>
-          <li>
-            <span className="font-semibold text-foreground">Forest floor</span> – Consider staggered
-            elevations or pulses to communicate ground-level discoveries.
-          </li>
-        </ul>
+        <div className="space-y-4 text-sm text-muted-foreground">
+          <p>
+            Highlight one specimen at a time, letting adjacent cards preview what&apos;s coming
+            next. This reduces cognitive load when presenting complex ecology data to motion-first
+            stakeholders.
+          </p>
+          <p className="text-xs text-muted-foreground/80">
+            Once the narrative layer is signed off, hook spring values into each card&apos;s
+            transition to mirror canopy vs. understory personality—glow pulses for humid layers,
+            tighter easing for ground cover.
+          </p>
+        </div>
       </MotionControlPanel>
     </div>
   );
 }
 
-function MatrixSkeleton() {
+function CarouselSkeleton() {
   return (
-    <>
+    <div className="flex h-full w-full items-center justify-center gap-4">
       {Array.from({ length: 3 }).map((_, index) => (
         <div
           key={`skeleton-${index}`}
-          className="h-[92px] animate-pulse rounded-2xl border border-white/5 bg-slate-900/40"
+          className="h-[220px] w-[160px] animate-pulse rounded-[32px] border border-white/5 bg-slate-900/40 shadow-[0_16px_40px_rgba(6,8,30,0.4)]"
         />
       ))}
-    </>
+    </div>
   );
 }
 
 type SpecimenCardProps = {
   specimen: SpecimenCard;
-  zone: EcologyZone;
+  relativePosition: number;
+  isActive: boolean;
+  onSelect: () => void;
 };
 
-function SpecimenCard({ specimen, zone }: SpecimenCardProps) {
+function SpecimenCard({ specimen, relativePosition, isActive, onSelect }: SpecimenCardProps) {
+  const distance = Math.abs(relativePosition);
+  if (distance > 2) {
+    return null;
+  }
+
   return (
     <motion.article
-      whileHover={{ y: -6 }}
-      transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-left text-slate-50 shadow-[0_16px_40px_rgba(8,10,35,0.4)]"
+      className={cn(
+        "absolute flex h-[240px] w-[180px] flex-col items-center justify-center rounded-[32px] border border-white/10 bg-slate-950/75 px-5 py-6 text-center text-slate-50 shadow-[0_25px_70px_rgba(8,10,35,0.6)]",
+        !isActive ? "cursor-pointer" : "cursor-default",
+      )}
+      animate={{
+        x: relativePosition * 210,
+        scale: isActive ? 1 : 0.8,
+        opacity: isActive ? 1 : 0.45,
+        rotateY: relativePosition * -12,
+        zIndex: 10 - distance,
+      }}
+      transition={{ type: "spring", stiffness: 300, damping: 32 }}
+      role="button"
+      tabIndex={0}
+      onClick={() => {
+        if (!isActive) {
+          onSelect();
+        }
+      }}
+      onKeyDown={(event) => {
+        if (!isActive && (event.key === "Enter" || event.key === " ")) {
+          event.preventDefault();
+          onSelect();
+        }
+      }}
     >
       <div
         className={cn(
-          "pointer-events-none absolute inset-0 opacity-60 blur-2xl bg-gradient-to-br",
+          "mb-4 h-12 w-12 rounded-full border border-white/20 bg-gradient-to-br",
           specimen.accent,
         )}
-        aria-hidden="true"
       />
-      <div className="relative z-10 flex flex-col gap-1">
-        <p className="text-[10px] uppercase tracking-[0.35em] text-slate-400">{zone.label}</p>
-        <h3 className="text-sm font-semibold leading-tight">{specimen.name}</h3>
-        <p className="text-xs text-slate-300">{specimen.family}</p>
-      </div>
-      <div className="relative z-10 mt-3 text-xs text-slate-300 transition-all duration-300 ease-out group-hover:max-h-24 group-hover:opacity-100 group-hover:translate-y-0 max-h-0 -translate-y-1 opacity-0">
-        {zone.description} <span className="text-slate-400">/ {specimen.region}</span>
+      <h3
+        className="text-lg mb-2 font-semibold leading-tight"
+        style={{
+          display: "-webkit-box",
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: "vertical",
+          overflow: "hidden",
+        }}
+      >
+        {specimen.name}
+      </h3>
+      <p className="text-xs uppercase tracking-[0.35em] text-slate-400">{specimen.family}</p>
+      <div
+        className={cn(
+          "mt-4 text-sm text-slate-300 transition-all duration-200",
+          isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1",
+        )}
+      >
+        {specimen.region}
       </div>
     </motion.article>
+  );
+}
+
+type CarouselButtonProps = {
+  label: string;
+  onClick: () => void;
+};
+
+function CarouselButton({ label, onClick }: CarouselButtonProps) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="rounded-full border border-white/20 bg-white/5 px-4 py-1 text-xs font-semibold text-white transition hover:bg-white/15"
+      aria-label={label}
+    >
+      {label}
+    </button>
   );
 }
