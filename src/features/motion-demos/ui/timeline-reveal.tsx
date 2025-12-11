@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import { MotionLivePreview } from "@/widgets/motion-preview";
 import { MotionControlPanel, MotionControlSlider } from "@/features/motion-controls";
 import { ArrowRight } from "@/shared/icons";
-import { useTimelineRevealControls } from "../model/useTimelineRevealControls";
+import { useTimelineRevealControls } from "../model/use-timeline-reveal-controls";
 
 const timelineSteps = [
   {

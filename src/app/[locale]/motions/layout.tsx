@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { usePathname } from "@/navigation";
 import { motionNavSections } from "./index";
 import { MotionSidebar, MotionContentPanel } from "@/widgets/motion-shell";
@@ -17,8 +17,13 @@ type MotionLayoutProps = {
 
 export default function MotionLayout({ children }: MotionLayoutProps) {
   const pathname = usePathname();
+  const locale = useLocale();
   const layoutTranslations = useTranslations("motionLayout");
   const demoTranslations = useTranslations("demos");
+  const normalizedPathname =
+    pathname.startsWith(`/${locale}`) && pathname.length > locale.length + 1
+      ? pathname.slice(locale.length + 1)
+      : pathname;
 
   const overviewCopy = {
     label: layoutTranslations("overviewLabel"),
@@ -41,8 +46,9 @@ export default function MotionLayout({ children }: MotionLayoutProps) {
       return {
         key: item.slug,
         href,
+        locale,
         label: demoTranslations(`${item.translationKey}.title`),
-        isActive: pathname === href,
+        isActive: normalizedPathname === href,
         isAvailable: item.isAvailable,
         comingSoonLabel: layoutTranslations("comingSoon"),
       };

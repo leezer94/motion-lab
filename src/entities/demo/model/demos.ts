@@ -1,4 +1,4 @@
-export type DemoTranslationKey = "hoverSprings" | "timelineReveal" | "dragConstraints";
+export type DemoTranslationKey = "hoverSprings" | "timelineReveal" | "ecologyMatrix";
 
 export type Demo = {
   key: DemoTranslationKey;
@@ -15,7 +15,7 @@ export const demos: Demo[] = [
     accent: "from-indigo-400/30 to-sky-500/20",
   },
   {
-    key: "dragConstraints",
+    key: "ecologyMatrix",
     accent: "from-emerald-400/30 to-lime-500/20",
   },
 ];

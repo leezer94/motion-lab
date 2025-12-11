@@ -4,6 +4,7 @@ export type MotionNavState = {
   openSections: Record<string, boolean>;
   initializeSections: (sectionIds: string[]) => void;
   toggleSection: (sectionId: string) => void;
+  setSectionOpen: (sectionId: string, isOpen: boolean) => void;
 };
 
 export const useMotionNavStore = create<MotionNavState>((set) => ({
@@ -35,6 +36,13 @@ export const useMotionNavStore = create<MotionNavState>((set) => ({
       openSections: {
         ...state.openSections,
         [sectionId]: !(state.openSections[sectionId] ?? false),
+      },
+    })),
+  setSectionOpen: (sectionId, isOpen) =>
+    set((state) => ({
+      openSections: {
+        ...state.openSections,
+        [sectionId]: isOpen,
       },
     })),
 }));

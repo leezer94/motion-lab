@@ -1,4 +1,5 @@
 import type { DemoTranslationKey } from "@/entities/demo/model/demos";
+import { motionDemoRegistry } from "@/features/motion-demos";
 
 export type MotionNavLeaf = {
   slug: string;
@@ -12,38 +13,43 @@ export type MotionNavSection = {
   items: MotionNavLeaf[];
 };
 
-export const motionNavSections: MotionNavSection[] = [
+type MotionNavSectionConfig = {
+  id: string;
+  labelTranslationKey: string;
+  categorySlug: string;
+  extraItems?: MotionNavLeaf[];
+};
+
+const sectionConfigs: MotionNavSectionConfig[] = [
   {
     id: "buttons",
     labelTranslationKey: "buttons",
-    items: [
-      {
-        slug: "button",
-        translationKey: "hoverSprings",
-        isAvailable: true,
-      },
-    ],
+    categorySlug: "button",
   },
   {
     id: "timelines",
     labelTranslationKey: "timelines",
-    items: [
-      {
-        slug: "timeline-reveal",
-        translationKey: "timelineReveal",
-        isAvailable: true,
-      },
-    ],
+    categorySlug: "timeline",
   },
   {
     id: "interactions",
     labelTranslationKey: "interactions",
-    items: [
-      {
-        slug: "drag-constraints",
-        translationKey: "dragConstraints",
-        isAvailable: false,
-      },
-    ],
+    categorySlug: "interactions",
   },
 ];
+
+export const motionNavSections: MotionNavSection[] = sectionConfigs.map((section) => {
+  const dynamicItems: MotionNavLeaf[] = motionDemoRegistry
+    .filter((demo) => demo.category === section.categorySlug)
+    .map((demo) => ({
+      slug: demo.slug,
+      translationKey: demo.translationKey,
+      isAvailable: true,
+    }));
+
+  return {
+    id: section.id,
+    labelTranslationKey: section.labelTranslationKey,
+    items: [...dynamicItems, ...(section.extraItems ?? [])],
+  };
+});

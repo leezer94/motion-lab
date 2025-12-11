@@ -40,7 +40,7 @@
     "navSections": {
       "buttons": "버튼 모션",
       "timelines": "타임라인",
-      "interactions": "인터랙션"
+      "interactions": "생태 탐색"
     }
   },
   "demos": {
@@ -52,9 +52,9 @@
       "title": "타임라인 리빌",
       "description": "요소가 시간차를 두고 차례차례 등장합니다."
     },
-    "dragConstraints": {
-      "title": "드래그 제약",
-      "description": "손끝으로 조작하는 듯한 경계 내 드래그 인터랙션."
+    "ecologyMatrix": {
+      "title": "에콜로지 매트릭스",
+      "description": "수관·하층·바닥층으로 식물을 묶어 공간 기반 모션을 설계합니다."
     }
   }
 }

@@ -2,9 +2,10 @@
 
 import { motion } from "motion/react";
 import { Card } from "@design-system";
-import type { Demo, DemoTranslationKey } from "../model/demos";
+import type { Demo } from "../model/demos";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/navigation";
+import { getMotionDemoPathByTranslationKey } from "@/features/motion-demos";
 
 const hoverTransition = {
   type: "spring" as const,
@@ -12,16 +13,24 @@ const hoverTransition = {
   damping: 16,
 };
 
-const demoRouteMap: Record<DemoTranslationKey, string> = {
-  hoverSprings: "button",
-  timelineReveal: "timeline-reveal",
-  dragConstraints: "button",
-};
-
 export function DemoCard({ demo }: { demo: Demo }) {
   const demoTranslations = useTranslations("demos");
   const locale = useLocale();
-  const href = `/motions/${demoRouteMap[demo.key] ?? "button"}`;
+  const href = getMotionDemoPathByTranslationKey(demo.key);
+
+  const cardContent = (
+    <Card
+      tone="glass"
+      interactive={Boolean(href)}
+      className="flex h-full flex-col bg-linear-to-br from-muted/50 via-card to-card text-foreground"
+    >
+      <div className={`mb-6 h-12 w-12 rounded-2xl bg-linear-to-br ${demo.accent}`} />
+      <h2 className="text-xl font-semibold">{demoTranslations(`${demo.key}.title`)}</h2>
+      <p className="mt-2 text-sm text-muted-foreground">
+        {demoTranslations(`${demo.key}.description`)}
+      </p>
+    </Card>
+  );
 
   return (
     <motion.div
@@ -34,19 +43,18 @@ export function DemoCard({ demo }: { demo: Demo }) {
       style={{ filter: "drop-shadow(0px 0px 0px rgba(15, 23, 42, 0))" }}
       transition={hoverTransition}
     >
-      <Link href={href} locale={locale}>
-        <Card
-          tone="glass"
-          interactive
-          className="flex h-full flex-col bg-linear-to-br from-muted/50 via-card to-card text-foreground"
+      {href ? (
+        <Link href={href} locale={locale}>
+          {cardContent}
+        </Link>
+      ) : (
+        <div
+          aria-disabled="true"
+          className="block cursor-not-allowed rounded-3xl border border-dashed border-border/50 p-[1px] opacity-70"
         >
-          <div className={`mb-6 h-12 w-12 rounded-2xl bg-linear-to-br ${demo.accent}`} />
-          <h2 className="text-xl font-semibold">{demoTranslations(`${demo.key}.title`)}</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {demoTranslations(`${demo.key}.description`)}
-          </p>
-        </Card>
-      </Link>
+          {cardContent}
+        </div>
+      )}
     </motion.div>
   );
 }

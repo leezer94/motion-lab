@@ -10,6 +10,7 @@ import { useMotionNavStore } from "../model/motion-nav-store";
 export type MotionNavListItem = {
   key: string;
   href: string;
+  locale?: string;
   label: string;
   isActive: boolean;
   isAvailable: boolean;
@@ -30,24 +31,31 @@ export function MotionNavList({ sections }: MotionNavListProps) {
   const openSections = useMotionNavStore((state) => state.openSections);
   const initializeSections = useMotionNavStore((state) => state.initializeSections);
   const toggleSection = useMotionNavStore((state) => state.toggleSection);
+  const setSectionOpen = useMotionNavStore((state) => state.setSectionOpen);
 
   useEffect(() => {
     initializeSections(sections.map((section) => section.key));
   }, [sections, initializeSections]);
+
+  useEffect(() => {
+    sections.forEach((section) => {
+      const hasActiveItem = section.items.some((item) => item.isActive);
+      setSectionOpen(section.key, hasActiveItem);
+    });
+  }, [sections, setSectionOpen]);
 
   return (
     <nav className="mt-6 flex flex-col gap-4">
       {sections.map((section) => {
         const isOpen = openSections[section.key] ?? false;
         const contentId = `motion-nav-panel-${section.key}`;
+
         return (
           <div key={section.key}>
             <button
               type="button"
               onClick={() => toggleSection(section.key)}
               className="flex w-full items-center justify-between rounded-2xl border border-transparent px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-muted-foreground transition-colors hover:text-foreground"
-              aria-expanded={isOpen ? "true" : "false"}
-              aria-controls={contentId}
             >
               <span>{section.label}</span>
               <ChevronDown
@@ -104,6 +112,7 @@ function NavItem({ item }: { item: MotionNavListItem }) {
   return (
     <Link
       href={item.href}
+      locale={item.locale}
       className={cn(
         "relative block px-2 py-1 text-sm font-semibold tracking-tight transition-colors",
         item.isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground",

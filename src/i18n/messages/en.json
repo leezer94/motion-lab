@@ -40,7 +40,7 @@
     "navSections": {
       "buttons": "Button motions",
       "timelines": "Timeline reveals",
-      "interactions": "Drag interactions"
+      "interactions": "Ecology explorations"
     }
   },
   "demos": {
@@ -52,9 +52,9 @@
       "title": "Timeline reveal",
       "description": "Elements pop into view with a staggered timeline."
     },
-    "dragConstraints": {
-      "title": "Drag constraints",
-      "description": "Give components boundaries for tactile interactions."
+    "ecologyMatrix": {
+      "title": "Ecology matrix",
+      "description": "Plant specimens grouped by canopy, understory, and floor to plan spatial motion."
     }
   }
 }
