@@ -6,22 +6,30 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
-
-type Theme = "light" | "dark";
+import {
+  type ThemePreference,
+  THEME_COOKIE_MAX_AGE,
+  THEME_PREFERENCE_COOKIE,
+  THEME_PREFERENCE_KEY,
+} from "./theme-config";
 
 type ThemeContextValue = {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
+  theme: ThemePreference;
+  setTheme: (theme: ThemePreference) => void;
+};
+
+type ThemeProviderProps = {
+  children: ReactNode;
+  initialTheme?: ThemePreference;
 };
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
-const THEME_STORAGE_KEY = "motion-lab-theme";
-
-function applyTheme(value: Theme) {
+function applyTheme(value: ThemePreference) {
   if (typeof document === "undefined") return;
   const root = document.documentElement;
   if (!root) return;
@@ -32,11 +40,24 @@ function applyTheme(value: Theme) {
   }
 }
 
-function resolveInitialTheme(): Theme {
+function persistTheme(value: ThemePreference) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(THEME_PREFERENCE_KEY, value);
+  } catch {
+    // ignore storage errors
+  }
+  document.cookie = `${THEME_PREFERENCE_COOKIE}=${value}; path=/; max-age=${THEME_COOKIE_MAX_AGE}; SameSite=Lax`;
+}
+
+function resolveInitialTheme(preferred?: ThemePreference): ThemePreference {
+  if (preferred) {
+    return preferred;
+  }
   if (typeof window === "undefined") {
     return "light";
   }
-  const saved = window.localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
+  const saved = window.localStorage.getItem(THEME_PREFERENCE_KEY) as ThemePreference | null;
   if (saved === "light" || saved === "dark") {
     return saved;
   }
@@ -44,19 +65,26 @@ function resolveInitialTheme(): Theme {
   return prefersDark ? "dark" : "light";
 }
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(() => resolveInitialTheme());
+export function ThemeProvider({ children, initialTheme }: ThemeProviderProps) {
+  const [theme, setThemeState] = useState<ThemePreference>(() => resolveInitialTheme(initialTheme));
+  const initialThemeRef = useRef(theme);
+
+  const updateEnvironment = useCallback((value: ThemePreference) => {
+    applyTheme(value);
+    persistTheme(value);
+  }, []);
 
   useEffect(() => {
-    applyTheme(theme);
-    if (typeof window !== "undefined") {
-      window.localStorage.setItem(THEME_STORAGE_KEY, theme);
-    }
-  }, [theme]);
+    updateEnvironment(initialThemeRef.current);
+  }, [updateEnvironment]);
 
-  const setTheme = useCallback((value: Theme) => {
-    setThemeState(value);
-  }, []);
+  const setTheme = useCallback(
+    (value: ThemePreference) => {
+      setThemeState(value);
+      updateEnvironment(value);
+    },
+    [updateEnvironment],
+  );
 
   const value = useMemo(
     () => ({

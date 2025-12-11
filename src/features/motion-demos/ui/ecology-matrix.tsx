@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { motion } from "motion/react";
+import { useMemo, useState } from "react";
 import { MotionLivePreview } from "@/widgets/motion-preview";
 import { MotionControlPanel } from "@/features/motion-controls";
-import { cn } from "@/design-system/utils/cn";
+import { useIsMobile } from "@/shared/hooks";
 import { useGbifSpecimens, type SpecimenCard } from "../model/use-gbif-specimens";
+import { EcologyCarouselCard } from "./ecology-carousel-card";
+import { EcologyCarouselSkeleton } from "./ecology-carousel-skeleton";
 
 const fallbackSpecimens: SpecimenCard[] = [
   {
@@ -78,10 +79,7 @@ export function EcologyMatrix() {
   const dataset = cards?.length ? cards : fallbackSpecimens;
   const [activeIndex, setActiveIndex] = useState(0);
   const normalizedIndex = ((activeIndex % dataset.length) + dataset.length) % dataset.length;
-
-  useEffect(() => {
-    console.log(cards, "cards");
-  }, [cards]);
+  const isMobile = useIsMobile();
 
   const carouselItems = useMemo(() => {
     const total = dataset.length;
@@ -115,14 +113,15 @@ export function EcologyMatrix() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.15),_rgba(15,23,42,0.85))]" />
           <div className="relative z-10 flex h-full w-full items-center justify-center">
             {isLoading ? (
-              <CarouselSkeleton />
+              <EcologyCarouselSkeleton />
             ) : (
               carouselItems.map(({ specimen, relative, index }) => (
-                <SpecimenCard
+                <EcologyCarouselCard
                   key={specimen.id}
                   specimen={specimen}
                   relativePosition={relative}
                   isActive={relative === 0}
+                  isMobile={isMobile}
                   onSelect={() => setActiveIndex(index)}
                 />
               ))
@@ -157,90 +156,6 @@ export function EcologyMatrix() {
         </div>
       </MotionControlPanel>
     </div>
-  );
-}
-
-function CarouselSkeleton() {
-  return (
-    <div className="flex h-full w-full items-center justify-center gap-4">
-      {Array.from({ length: 3 }).map((_, index) => (
-        <div
-          key={`skeleton-${index}`}
-          className="h-[220px] w-[160px] animate-pulse rounded-[32px] border border-white/5 bg-slate-900/40 shadow-[0_16px_40px_rgba(6,8,30,0.4)]"
-        />
-      ))}
-    </div>
-  );
-}
-
-type SpecimenCardProps = {
-  specimen: SpecimenCard;
-  relativePosition: number;
-  isActive: boolean;
-  onSelect: () => void;
-};
-
-function SpecimenCard({ specimen, relativePosition, isActive, onSelect }: SpecimenCardProps) {
-  const distance = Math.abs(relativePosition);
-  if (distance > 2) {
-    return null;
-  }
-
-  return (
-    <motion.article
-      className={cn(
-        "absolute flex h-[240px] w-[180px] flex-col items-center justify-center rounded-[32px] border border-white/10 bg-slate-950/75 px-5 py-6 text-center text-slate-50 shadow-[0_25px_70px_rgba(8,10,35,0.6)]",
-        !isActive ? "cursor-pointer" : "cursor-default",
-      )}
-      animate={{
-        x: relativePosition * 210,
-        scale: isActive ? 1 : 0.8,
-        opacity: isActive ? 1 : 0.45,
-        rotateY: relativePosition * -12,
-        zIndex: 10 - distance,
-      }}
-      transition={{ type: "spring", stiffness: 300, damping: 32 }}
-      role="button"
-      tabIndex={0}
-      onClick={() => {
-        if (!isActive) {
-          onSelect();
-        }
-      }}
-      onKeyDown={(event) => {
-        if (!isActive && (event.key === "Enter" || event.key === " ")) {
-          event.preventDefault();
-          onSelect();
-        }
-      }}
-    >
-      <div
-        className={cn(
-          "mb-4 h-12 w-12 rounded-full border border-white/20 bg-gradient-to-br",
-          specimen.accent,
-        )}
-      />
-      <h3
-        className="text-lg mb-2 font-semibold leading-tight"
-        style={{
-          display: "-webkit-box",
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: "vertical",
-          overflow: "hidden",
-        }}
-      >
-        {specimen.name}
-      </h3>
-      <p className="text-xs uppercase tracking-[0.35em] text-slate-400">{specimen.family}</p>
-      <div
-        className={cn(
-          "mt-4 text-sm text-slate-300 transition-all duration-200",
-          isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1",
-        )}
-      >
-        {specimen.region}
-      </div>
-    </motion.article>
   );
 }
 

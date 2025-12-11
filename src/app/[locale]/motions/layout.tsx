@@ -66,15 +66,14 @@ export default function MotionLayout({ children }: MotionLayoutProps) {
             <h1 className="text-3xl font-semibold text-foreground">{overviewCopy.heading}</h1>
             <p className="text-base text-muted-foreground">{overviewCopy.subheading}</p>
           </section>
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
-            <div className="flex items-center gap-3 rounded-full border border-border/60 bg-background/80 px-4 py-2 shadow-[0_10px_30px_rgba(15,23,42,0.08)]">
-              <ThemeToggle />
-              <div className="h-4 w-px bg-border/70" aria-hidden="true" />
-              <LanguageSwitcher />
+          <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-center sm:justify-end">
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <ThemeToggle className="min-w-[140px]" />
+              <LanguageSwitcher className="min-w-[120px]" />
             </div>
             <Link
               href="/"
-              className="inline-flex items-center justify-center rounded-full border border-border/80 p-3 text-foreground transition-colors hover:border-primary/40 hover:text-primary"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border/80 text-foreground transition-colors hover:border-primary/40 hover:text-primary"
               aria-label={overviewCopy.ctaLabel}
             >
               <Home className="h-4 w-4" />
