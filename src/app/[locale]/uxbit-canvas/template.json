@@ -1,0 +1,324 @@
+{
+  "message": "1 page(s) found.",
+  "siteName": "uxbit-canvas",
+  "pageCount": 1,
+  "template": "uxbit-canvas",
+  "content": [
+    {
+      "_id": "uxbit-canvas-page",
+      "Website": "uxbit-canvas-site",
+      "label": "Canvas Variations",
+      "siteName": "uxbit-canvas",
+      "blocks": [
+        {
+          "WebsiteBlock": {
+            "_id": "canvas-cover",
+            "description": "Hero gradient section",
+            "type": "cover",
+            "name": "cover",
+            "usage": 0,
+            "category": "cover/canvas"
+          },
+          "sectionProps": {
+            "padding": "40px",
+            "gap": "20px",
+            "direction": "column",
+            "center": true,
+            "directionDesktop": "column",
+            "wrapDesktop": "nowrap",
+            "justifyDesktop": "center",
+            "alignDesktop": "center",
+            "gapDesktop": "24px"
+          },
+          "hero": {
+            "title": {
+              "text": "Canvas Motion Index",
+              "variant": "h1",
+              "font": "clash-display",
+              "fontSize": "xxl",
+              "color": "#0f172a",
+              "weight": "700",
+              "animation": {
+                "rolling": true,
+                "typingTexts": ["Canvas Motion Index", "UXBIT Canvas", "Motion Canvas"],
+                "typingDuration": 4,
+                "typingLoop": true,
+                "typingCursor": true,
+                "typingUnit": "word"
+              }
+            },
+            "subtitle": {
+              "text": "토큰으로 구성한 다섯 가지 섹션",
+              "variant": "p",
+              "font": "pretendard",
+              "fontSize": "lg",
+              "color": "#334155",
+              "weight": "500",
+              "animation": {
+                "rolling": true,
+                "typingTexts": ["토큰으로 구성한 다섯 가지 섹션", "토큰 조합만으로 바뀌는 페이지"],
+                "typingDuration": 5,
+                "typingLoop": true,
+                "typingCursor": true,
+                "typingUnit": "char"
+              }
+            }
+          },
+          "cta": {
+            "label": "토큰 가이드 보기",
+            "href": "https://rootive.me/tokens",
+            "target": "_blank",
+            "variant": "primary"
+          },
+          "background": {
+            "gradient": "linear-gradient(135deg,#f59e0b,#f472b6,#6366f1)"
+          }
+        },
+        {
+          "WebsiteBlock": {
+            "_id": "canvas-mosaic",
+            "description": "Mosaic layout",
+            "type": "mosaic",
+            "name": "mosaic",
+            "usage": 0,
+            "category": "story/canvas"
+          },
+          "sectionProps": {
+            "padding": "32px",
+            "gap": "18px",
+            "direction": "column",
+            "center": false,
+            "directionDesktop": "row",
+            "wrapDesktop": "wrap",
+            "justifyDesktop": "space-between",
+            "alignDesktop": "stretch",
+            "gapDesktop": "18px"
+          },
+          "cards": [
+            {
+              "title": "Warm Pulse",
+              "body": "rounded=\"oval\" ratio=\"4:3\" shadow tokens",
+              "accent": "linear-gradient(135deg,#f97316,#fb7185)",
+              "titleAnimation": {
+                "rolling": true,
+                "typingTexts": ["Warm Pulse", "Glow Pulse"],
+                "typingDuration": 3,
+                "typingLoop": true
+              },
+              "bodyAnimation": {
+                "rolling": true,
+                "typingTexts": ["rounded=\"oval\" ratio=\"4:3\" shadow tokens"],
+                "typingDuration": 4
+              }
+            },
+            {
+              "title": "Arctic Air",
+              "body": "bg-size=\"cover\" overlay=\"rgba(15,23,42,0.35)\"",
+              "accent": "linear-gradient(135deg,#38bdf8,#0ea5e9)",
+              "titleAnimation": {
+                "rolling": true,
+                "typingTexts": ["Arctic Air"],
+                "typingDuration": 5,
+                "typingLoop": true,
+                "typingCursor": false
+              },
+              "bodyAnimation": {
+                "rolling": true,
+                "typingTexts": ["bg-size=\"cover\" overlay=\"rgba(15,23,42,0.35)\""],
+                "typingDuration": 4,
+                "typingLoop": true
+              }
+            },
+            {
+              "title": "Velvet Noise",
+              "body": "font-size=\"lg\" highlight=\"#fef3c7\"",
+              "accent": "linear-gradient(135deg,#c084fc,#a855f7)",
+              "titleAnimation": {
+                "rolling": true,
+                "typingTexts": ["Velvet Noise", "Velvet Echo"],
+                "typingDuration": 6,
+                "typingLoop": true
+              },
+              "bodyAnimation": {
+                "rolling": true,
+                "typingTexts": ["font-size=\"lg\" highlight=\"#fef3c7\""],
+                "typingDuration": 3,
+                "typingLoop": true
+              }
+            }
+          ],
+          "images": [
+            {
+              "src": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop",
+              "ratio": "3:2",
+              "rounded": "soft",
+              "background": "#0f172a",
+              "shadow": "0 10px 30px rgba(15,23,42,0.35)",
+              "overlay": "rgba(15,23,42,0.2)",
+              "animation": "float"
+            }
+          ]
+        },
+        {
+          "WebsiteBlock": {
+            "_id": "canvas-gallery",
+            "description": "Gallery rail",
+            "type": "gallery",
+            "name": "gallery",
+            "usage": 0,
+            "category": "gallery/canvas"
+          },
+          "sectionProps": {
+            "padding": "28px",
+            "gap": "20px",
+            "direction": "column",
+            "center": true,
+            "directionDesktop": "column",
+            "wrapDesktop": "nowrap",
+            "justifyDesktop": "center",
+            "alignDesktop": "stretch",
+            "gapDesktop": "20px"
+          },
+          "images": [
+            {
+              "src": "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=1200&auto=format&fit=crop",
+              "ratio": "16:9",
+              "rounded": "diagonal",
+              "background": "#082f49",
+              "shadow": "0 14px 40px rgba(8,47,73,0.4)",
+              "overlay": "rgba(8,47,73,0.35)",
+              "animation": "wobble"
+            },
+            {
+              "src": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1200&auto=format&fit=crop",
+              "ratio": "4:5",
+              "rounded": "oval",
+              "background": "#172554",
+              "shadow": "0 12px 36px rgba(23,37,84,0.35)",
+              "overlay": "rgba(23,37,84,0.3)",
+              "animation": "pulse"
+            },
+            {
+              "src": "https://images.unsplash.com/photo-1482192597420-4817fdd7e8b0?q=80&w=1200&auto=format&fit=crop",
+              "ratio": "3:4",
+              "rounded": "circle",
+              "background": "#0f172a",
+              "shadow": "0 10px 30px rgba(15,23,42,0.35)",
+              "overlay": "rgba(15,23,42,0.4)",
+              "animation": "spin"
+            }
+          ]
+        },
+        {
+          "WebsiteBlock": {
+            "_id": "canvas-quote",
+            "description": "Quote highlight",
+            "type": "quote",
+            "name": "quote",
+            "usage": 0,
+            "category": "highlight/canvas"
+          },
+          "sectionProps": {
+            "padding": "30px",
+            "gap": "16px",
+            "direction": "column",
+            "center": true,
+            "directionDesktop": "column",
+            "wrapDesktop": "nowrap",
+            "justifyDesktop": "center",
+            "alignDesktop": "center",
+            "gapDesktop": "16px"
+          },
+          "quote": {
+            "text": "토큰을 극한까지 쓰면 유지 보수는 쉬워지고 실험은 빨라진다.",
+            "author": "Canvas Team",
+            "variant": "p",
+            "font": "paperlogy",
+            "fontSize": "lg",
+            "color": "#0f172a",
+            "highlight": "#fde68a",
+            "animation": {
+              "rolling": true,
+              "typingTexts": [
+                "토큰을 극한까지 쓰면 유지 보수는 쉬워지고 실험은 빨라진다.",
+                "토큰을 바꾸면 곧바로 다른 페이지가 완성된다."
+              ],
+              "typingDuration": 5,
+              "typingLoop": true,
+              "typingCursor": true,
+              "typingUnit": "word"
+            }
+          }
+        },
+        {
+          "WebsiteBlock": {
+            "_id": "canvas-cta",
+            "description": "Final CTA",
+            "type": "cta",
+            "name": "cta",
+            "usage": 0,
+            "category": "cta/canvas"
+          },
+          "sectionProps": {
+            "padding": "34px",
+            "gap": "18px",
+            "direction": "column",
+            "center": true,
+            "directionDesktop": "row",
+            "wrapDesktop": "wrap",
+            "justifyDesktop": "space-between",
+            "alignDesktop": "center",
+            "gapDesktop": "18px"
+          },
+          "cta": {
+            "title": "JSON으로 페이지를 리믹스하세요",
+            "titleAnimation": {
+              "rolling": true,
+              "typingTexts": ["JSON으로 페이지를 리믹스하세요", "토큰으로 페이지를 리믹스하세요"],
+              "typingDuration": 4,
+              "typingLoop": true
+            },
+            "body": "모든 섹션은 토큰화되어 있으니, 값만 바꾸면 새로운 템플릿이 됩니다.",
+            "bodyAnimation": {
+              "rolling": true,
+              "typingTexts": [
+                "모든 섹션은 토큰화되어 있으니, 값만 바꾸면 새로운 템플릿이 됩니다.",
+                "JSON 값만 바꾸면 새로운 페이지가 탄생합니다."
+              ],
+              "typingDuration": 5,
+              "typingLoop": true,
+              "typingCursor": true,
+              "typingUnit": "word"
+            },
+            "primary": {
+              "label": "새 템플릿 만들기",
+              "href": "https://rootive.me/create",
+              "target": "_blank"
+            },
+            "secondary": {
+              "label": "스토리 살펴보기",
+              "href": "https://rootive.me/cases",
+              "target": "_blank"
+            }
+          }
+        }
+      ],
+      "order": 0,
+      "createdAt": "2025-02-01T00:00:00.000Z",
+      "seo": {
+        "title": "Canvas Token Template",
+        "description": "다섯 개의 UXBIT 섹션으로 구성된 캔버스 템플릿",
+        "keywords": ["UXBIT", "Canvas", "Template", "Tokens"],
+        "image": {
+          "_id": "canvas-cover",
+          "author": "Canvas Lab",
+          "authorLink": "https://rootive.me",
+          "description": "Gradient hero",
+          "type": "uxbit",
+          "url": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop",
+          "createdAt": "2025-02-01T00:00:00.000Z"
+        }
+      }
+    }
+  ]
+}

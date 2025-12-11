@@ -17,7 +17,7 @@ export function DemoGrid() {
       className="grid gap-6 md:grid-cols-3"
     >
       {demos.map((demo) => (
-        <motion.div key={demo.title} variants={containerVariants}>
+        <motion.div key={demo.key} variants={containerVariants}>
           <DemoCard demo={demo} />
         </motion.div>
       ))}

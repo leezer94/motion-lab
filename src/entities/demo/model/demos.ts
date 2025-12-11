@@ -1,23 +1,21 @@
+export type DemoTranslationKey = "hoverSprings" | "timelineReveal" | "ecologyMatrix";
+
 export type Demo = {
-  title: string;
-  description: string;
+  key: DemoTranslationKey;
   accent: string;
 };
 
 export const demos: Demo[] = [
   {
-    title: "Hover springs",
-    description: "Subtle lift/rotate animation for buttons or cards.",
+    key: "hoverSprings",
     accent: "from-amber-400/30 to-orange-500/20",
   },
   {
-    title: "Timeline reveal",
-    description: "Elements pop into view with a staggered timeline.",
+    key: "timelineReveal",
     accent: "from-indigo-400/30 to-sky-500/20",
   },
   {
-    title: "Drag constraints",
-    description: "Give components boundaries for tactile interactions.",
+    key: "ecologyMatrix",
     accent: "from-emerald-400/30 to-lime-500/20",
   },
 ];

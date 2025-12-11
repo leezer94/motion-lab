@@ -2,13 +2,10 @@
 
 import { motion } from "motion/react";
 import { Card, CodePill, Eyebrow } from "@design-system";
-import { siteConfig } from "@/shared/config/site";
+import { useTranslations } from "next-intl";
 
 export function LabTip() {
-  const {
-    label,
-    body: { prefix, code, suffix },
-  } = siteConfig.tip;
+  const tip = useTranslations("tip");
 
   return (
     <motion.div
@@ -17,11 +14,11 @@ export function LabTip() {
       transition={{ delay: 0.4, duration: 0.4 }}
     >
       <Card tone="frosted" padding="lg" className="text-center sm:text-left">
-        <Eyebrow>{label}</Eyebrow>
-        <p className="mt-4 text-lg text-zinc-100">
-          {prefix}
-          <CodePill className="mx-2">{code}</CodePill>
-          {suffix}
+        <Eyebrow>{tip("label")}</Eyebrow>
+        <p className="mt-4 text-lg text-foreground">
+          {tip("body.prefix")}
+          <CodePill className="mx-2">{tip("body.code")}</CodePill>
+          {tip("body.suffix")}
         </p>
       </Card>
     </motion.div>

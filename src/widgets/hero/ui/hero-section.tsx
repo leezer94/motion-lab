@@ -2,11 +2,13 @@
 
 import { motion } from "motion/react";
 import Link from "next/link";
-import { buttonStyles, Eyebrow, SectionHeading } from "@design-system";
+import { Button, Eyebrow, SectionHeading } from "@design-system";
 import { siteConfig } from "@/shared/config/site";
+import { useTranslations } from "next-intl";
 
 export function HeroSection() {
-  const { kicker, headline, subheading, primaryCta, secondaryCta } = siteConfig.hero;
+  const hero = useTranslations("hero");
+  const { primaryCta, secondaryCta } = siteConfig.hero;
 
   return (
     <motion.div
@@ -15,18 +17,24 @@ export function HeroSection() {
       transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
       className="space-y-6 text-center sm:text-left"
     >
-      <Eyebrow>{kicker}</Eyebrow>
+      <Eyebrow>{hero("kicker")}</Eyebrow>
       <SectionHeading as="h1" size="xl">
-        {headline}
+        {hero("headline")}
       </SectionHeading>
-      <p className="text-base leading-relaxed text-zinc-300 sm:text-lg">{subheading}</p>
+      <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
+        {hero("subheading")}
+      </p>
       <div className="flex flex-wrap items-center justify-center gap-4 sm:justify-start">
-        <Link href={primaryCta.href} className={buttonStyles({ variant: "primary" })}>
-          {primaryCta.label}
-        </Link>
-        <Link href={secondaryCta.href} className={buttonStyles({ variant: "secondary" })}>
-          {secondaryCta.label}
-        </Link>
+        <Button asChild>
+          <Link href={primaryCta.href} target={primaryCta.target}>
+            {hero("primaryCtaLabel")}
+          </Link>
+        </Button>
+        <Button asChild variant="secondary">
+          <Link href={secondaryCta.href} target={secondaryCta.target}>
+            {hero("secondaryCtaLabel")}
+          </Link>
+        </Button>
       </div>
     </motion.div>
   );

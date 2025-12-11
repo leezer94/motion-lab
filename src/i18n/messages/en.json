@@ -1,0 +1,60 @@
+{
+  "hero": {
+    "kicker": "Motion Lab",
+    "headline": "Rapidly prototype delightful motion inside your Next.js app.",
+    "subheading": "This playground ships with Framer Motion so you can try interactions, validate easing curves, and copy snippets straight into your production features.",
+    "primaryCtaLabel": "Motion Docs",
+    "secondaryCtaLabel": "Next.js Docs"
+  },
+  "tip": {
+    "label": "Tip",
+    "body": {
+      "prefix": "Need another motion primitive? Create a component under",
+      "code": "src/components",
+      "suffix": "(or a feature slice) and import it here to keep the lab tidy."
+    }
+  },
+  "themeToggle": {
+    "lightMode": "Light mode",
+    "darkMode": "Dark mode",
+    "loadingLabel": "Loading theme toggle",
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode"
+  },
+  "languageSwitcher": {
+    "label": "Language",
+    "korean": "한국어",
+    "english": "English",
+    "switchToKorean": "Switch to Korean",
+    "switchToEnglish": "Switch to English"
+  },
+  "motionLayout": {
+    "overviewLabel": "Overview",
+    "overviewHeading": "Motion Lab playground",
+    "overviewSubheading": "Jump back to the main lab to pick another experiment.",
+    "backToHome": "Back to home",
+    "sectionLabel": "Lab",
+    "heading": "Motion demos",
+    "subheading": "Pick an interaction to explore and fine-tune live.",
+    "comingSoon": "Soon",
+    "navSections": {
+      "buttons": "Button motions",
+      "timelines": "Timeline reveals",
+      "interactions": "Ecology explorations"
+    }
+  },
+  "demos": {
+    "hoverSprings": {
+      "title": "Button Motion",
+      "description": "Motions applies to Button Component"
+    },
+    "timelineReveal": {
+      "title": "Timeline reveal",
+      "description": "Elements pop into view with a staggered timeline."
+    },
+    "ecologyMatrix": {
+      "title": "Ecology matrix",
+      "description": "Plant specimens grouped by canopy, understory, and floor to plan spatial motion."
+    }
+  }
+}

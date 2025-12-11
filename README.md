@@ -1,4 +1,4 @@
-# Framer Motion Examples
+# Motion Lab
 
 Next.js 16 playground configured with ESLint, Prettier, Tailwind CSS, and Framer Motion so you can iterate on motion experiments quickly. Husky automates the pre-commit workflow so every change ships linted, type-safe, and build-ready.
 
@@ -46,6 +46,13 @@ UI primitives that behave like a mini design system live inside `src/design-syst
 the `@design-system/*` path alias (`import { Card } from "@design-system";`) so that any slice can
 share the same button, card, and typography styling without moving to a monorepo. Extend this folder
 with additional tokens or components as the app grows—every consumer automatically gets the update.
+
+## Internationalization
+
+`next-intl` powers localized routes under `/[locale]` (`/en`, `/ko`). Messages live in
+`src/i18n/messages/*.json`, the middleware (`middleware.ts`) keeps `/` redirected to the default
+locale, and `[locale]/layout.tsx` loads the correct dictionary via `NextIntlClientProvider`. Add new
+locales by dropping another JSON file + updating `src/i18n/routing.ts`.
 
 ## Deployment
 

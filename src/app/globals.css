@@ -1,26 +1,61 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+  --ml-color-background: #f8fafc;
+  --ml-color-surface: #ffffff;
+  --ml-color-surface-muted: #e2e8f0;
+  --ml-color-border: rgba(15, 23, 42, 0.1);
+  --ml-color-text: #0f172a;
+  --ml-color-text-muted: rgba(15, 23, 42, 0.7);
+  --ml-color-accent: #4c1d95;
+  --ml-color-accent-muted: rgba(76, 29, 149, 0.15);
+  --ml-color-accent-foreground: #f5f3ff;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--ml-color-background);
+  --color-foreground: var(--ml-color-text);
+  --color-card: var(--ml-color-surface);
+  --color-muted: var(--ml-color-surface-muted);
+  --color-muted-foreground: var(--ml-color-text-muted);
+  --color-border: var(--ml-color-border);
+  --color-accent: var(--ml-color-accent);
+  --color-accent-foreground: var(--ml-color-accent-foreground);
   --font-sans: "Inter", "SF Pro Display", "Segoe UI", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", "SFMono-Regular", Menlo, ui-monospace, monospace;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    color-scheme: dark;
+    --ml-color-background: #020617;
+    --ml-color-surface: #0f172a;
+    --ml-color-surface-muted: #1e1b4b;
+    --ml-color-border: rgba(255, 255, 255, 0.15);
+    --ml-color-text: #f8fafc;
+    --ml-color-text-muted: rgba(226, 232, 240, 0.75);
+    --ml-color-accent: #7c3aed;
+    --ml-color-accent-muted: rgba(124, 58, 237, 0.2);
+    --ml-color-accent-foreground: #fdf4ff;
   }
 }
 
+:root.dark {
+  color-scheme: dark;
+  --ml-color-background: #020617;
+  --ml-color-surface: #0f172a;
+  --ml-color-surface-muted: #1e1b4b;
+  --ml-color-border: rgba(255, 255, 255, 0.15);
+  --ml-color-text: #f8fafc;
+  --ml-color-text-muted: rgba(226, 232, 240, 0.75);
+  --ml-color-accent: #7c3aed;
+  --ml-color-accent-muted: rgba(124, 58, 237, 0.2);
+  --ml-color-accent-foreground: #fdf4ff;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--ml-color-background);
+  color: var(--ml-color-text);
   font-family: var(--font-sans);
 }
