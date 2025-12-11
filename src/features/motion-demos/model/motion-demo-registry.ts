@@ -103,12 +103,26 @@ export const motionDemoRegistry: MotionDemoDefinition[] = [
   },
 ];
 
+const MOTIONS_ROUTE_PREFIX = "/motions";
+
+export function buildMotionDemoSlug(category: string, demo: string) {
+  return `${category}/${demo}`;
+}
+
+export function getMotionDemoHrefBySlug(slug: string) {
+  return `${MOTIONS_ROUTE_PREFIX}/${slug}`;
+}
+
+export function getMotionDemoHref(category: string, demo: string) {
+  return getMotionDemoHrefBySlug(buildMotionDemoSlug(category, demo));
+}
+
 export function getMotionDemoByParams(category: string, demo: string) {
-  const slug = `${category}/${demo}`;
+  const slug = buildMotionDemoSlug(category, demo);
   return motionDemoRegistry.find((definition) => definition.slug === slug);
 }
 
 export function getMotionDemoPathByTranslationKey(key: DemoTranslationKey) {
   const match = motionDemoRegistry.find((definition) => definition.translationKey === key);
-  return match ? `/motions/${match.slug}` : null;
+  return match ? getMotionDemoHrefBySlug(match.slug) : null;
 }

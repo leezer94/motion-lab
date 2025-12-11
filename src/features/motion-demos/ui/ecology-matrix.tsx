@@ -1,82 +1,18 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import { MotionLivePreview } from "@/widgets/motion-preview";
 import { MotionControlPanel } from "@/features/motion-controls";
 import { useIsMobile } from "@/shared/hooks";
 import { useGbifSpecimens, type SpecimenCard } from "../model/use-gbif-specimens";
 import { EcologyCarouselCard } from "./ecology-carousel-card";
 import { EcologyCarouselSkeleton } from "./ecology-carousel-skeleton";
-
-const fallbackSpecimens: SpecimenCard[] = [
-  {
-    id: "fallback-1",
-    name: "Monstera deliciosa",
-    family: "Araceae",
-    region: "Tropical canopy",
-    accent: "from-emerald-400/60 to-teal-500/40",
-  },
-  {
-    id: "fallback-2",
-    name: "Lavandula angustifolia",
-    family: "Lamiaceae",
-    region: "Mediterranean understory",
-    accent: "from-sky-500/60 to-indigo-500/40",
-  },
-  {
-    id: "fallback-3",
-    name: "Aloe vera",
-    family: "Asphodelaceae",
-    region: "Arid floor",
-    accent: "from-amber-500/60 to-orange-500/40",
-  },
-  {
-    id: "fallback-4",
-    name: "Ficus lyrata",
-    family: "Moraceae",
-    region: "West African canopy",
-    accent: "from-cyan-500/60 to-blue-500/40",
-  },
-  {
-    id: "fallback-5",
-    name: "Epipremnum aureum",
-    family: "Araceae",
-    region: "Island understory",
-    accent: "from-green-500/60 to-emerald-400/40",
-  },
-  {
-    id: "fallback-6",
-    name: "Tradescantia zebrina",
-    family: "Commelinaceae",
-    region: "Central American floor",
-    accent: "from-rose-500/60 to-fuchsia-500/40",
-  },
-  {
-    id: "fallback-7",
-    name: "Calathea orbifolia",
-    family: "Marantaceae",
-    region: "Bolivian understory",
-    accent: "from-lime-500/60 to-emerald-500/40",
-  },
-  {
-    id: "fallback-8",
-    name: "Tillandsia ionantha",
-    family: "Bromeliaceae",
-    region: "Mexico canopy",
-    accent: "from-purple-500/60 to-violet-500/40",
-  },
-  {
-    id: "fallback-9",
-    name: "Nepenthes alata",
-    family: "Nepenthaceae",
-    region: "Philippine floor",
-    accent: "from-orange-500/60 to-red-500/40",
-  },
-];
+import { cn } from "@/design-system/utils/cn";
 
 export function EcologyMatrix() {
   const { cards, isLoading, error } = useGbifSpecimens();
-  const dataset = cards?.length ? cards : fallbackSpecimens;
+  const dataset = cards;
   const [activeIndex, setActiveIndex] = useState(0);
   const normalizedIndex = ((activeIndex % dataset.length) + dataset.length) % dataset.length;
   const isMobile = useIsMobile();
@@ -96,14 +32,16 @@ export function EcologyMatrix() {
     setActiveIndex((prev) => prev + direction);
   };
 
+  const activeSpecimen = dataset[normalizedIndex] ?? dataset[0];
+
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_0.8fr]">
       <MotionLivePreview
-        label="Ecology carousel"
+        label="Orchid ecology carousel"
         footer={
           <p>
-            Hover a specimen to expand its description, then flip through the carousel to plan how
-            canopy, understory, and floor stories should flow.
+            Hover or tap an orchid tile to expand its staging story, then cycle to feel how canopy,
+            understory, and floor cues might translate into your motion stack.
           </p>
         }
         className="h-full"
@@ -133,27 +71,16 @@ export function EcologyMatrix() {
           </div>
           {error ? (
             <p className="absolute bottom-5 left-5 z-20 rounded-2xl border border-rose-500/40 bg-rose-500/10 px-4 py-2 text-xs text-rose-100">
-              Failed to load live specimens, showing fallback taxonomy.
+              Live data is offline—showing studio presets instead.
             </p>
           ) : null}
         </div>
       </MotionLivePreview>
       <MotionControlPanel
         title="Narrative cues"
-        description="Use this carousel to decide how to pace reveals and where to anchor motion accents."
+        description="Map fragrance-inspired cues to your UI tokens and align hover stories with bloom moods."
       >
-        <div className="space-y-4 text-sm text-muted-foreground">
-          <p>
-            Highlight one specimen at a time, letting adjacent cards preview what&apos;s coming
-            next. This reduces cognitive load when presenting complex ecology data to motion-first
-            stakeholders.
-          </p>
-          <p className="text-xs text-muted-foreground/80">
-            Once the narrative layer is signed off, hook spring values into each card&apos;s
-            transition to mirror canopy vs. understory personality—glow pulses for humid layers,
-            tighter easing for ground cover.
-          </p>
-        </div>
+        {isLoading ? <NarrativeSkeleton /> : <NarrativeDetails specimen={activeSpecimen} />}
       </MotionControlPanel>
     </div>
   );
@@ -174,5 +101,111 @@ function CarouselButton({ label, onClick }: CarouselButtonProps) {
     >
       {label}
     </button>
+  );
+}
+
+function NarrativeDetails({ specimen }: { specimen: SpecimenCard }) {
+  return (
+    <div className="space-y-5 text-sm text-muted-foreground">
+      <div className="flex min-h-[112px] items-center gap-4 rounded-3xl border border-border/60 bg-card/40 p-4">
+        <div className="relative h-16 w-16">
+          <div
+            className={cn(
+              "absolute inset-0 rounded-2xl border border-white/10 bg-gradient-to-br",
+              specimen.accent,
+              specimen.image ? "opacity-0" : "opacity-100",
+            )}
+          />
+          {specimen.image ? (
+            <div className="relative h-full w-full overflow-hidden rounded-2xl border border-white/15 shadow-[0_10px_40px_rgba(2,6,23,0.45)]">
+              <Image
+                src={specimen.image.src}
+                alt={specimen.image.alt}
+                fill
+                sizes="96px"
+                className="object-cover"
+              />
+            </div>
+          ) : null}
+        </div>
+        <div>
+          <p className="text-[11px] uppercase tracking-[0.35em] text-muted-foreground">
+            {specimen.family}
+          </p>
+          <h2 className="text-xl font-semibold text-foreground">{specimen.name}</h2>
+          <p className="text-sm text-muted-foreground/80">{specimen.region}</p>
+        </div>
+      </div>
+      <div className="min-h-[220px] rounded-3xl border border-border/60 bg-card/40 p-4">
+        <dl className="space-y-4 text-foreground">
+          <div>
+            <dt className="text-[11px] font-semibold uppercase tracking-[0.35em] text-emerald-300">
+              Fragrance accord
+            </dt>
+            <dd className="mt-1 text-base">{specimen.fragranceProfile}</dd>
+          </div>
+          <div>
+            <dt className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Profile</dt>
+            <dd className="mt-1 text-sm">{specimen.profile}</dd>
+          </div>
+          <div>
+            <dt className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Mood cue</dt>
+            <dd className="mt-1 text-sm">{specimen.moodCue}</dd>
+          </div>
+          <div>
+            <dt className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+              Motion direction
+            </dt>
+            <dd className="mt-1 text-sm leading-relaxed text-foreground/90 line-clamp-4">
+              {specimen.notes}
+            </dd>
+          </div>
+        </dl>
+        {specimen.image?.photographer ? (
+          <p className="mt-4 text-[11px] text-muted-foreground">
+            Photo:{" "}
+            <a
+              className="underline-offset-2 hover:underline"
+              href={specimen.image.link}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {specimen.image.photographer}
+            </a>
+          </p>
+        ) : null}
+      </div>
+      <p className="text-xs text-muted-foreground/80">
+        Highlight one orchid at a time. Adjacent cards preview upcoming moods so the team can
+        rehearse tempo shifts without cognitive overload. Once a narrative sticks, reuse the same
+        pacing inside hover, drag, and modal tokens.
+      </p>
+    </div>
+  );
+}
+
+function NarrativeSkeleton() {
+  return (
+    <div className="space-y-5 text-sm text-muted-foreground">
+      <div className="flex min-h-[112px] items-center gap-4 rounded-3xl border border-border/60 bg-card/40 p-4">
+        <div className="h-16 w-16 rounded-2xl bg-muted/30" />
+        <div className="flex flex-1 flex-col gap-2">
+          <div className="h-2 w-24 rounded-full bg-muted/30" />
+          <div className="h-3 w-40 rounded-full bg-muted/30" />
+          <div className="h-2 w-28 rounded-full bg-muted/20" />
+        </div>
+      </div>
+      <div className="min-h-[220px] rounded-3xl border border-border/60 bg-card/40 p-4">
+        <div className="flex flex-col gap-3">
+          {[1, 2, 3, 4].map((key) => (
+            <div key={key} className="space-y-2">
+              <div className="h-2 w-20 rounded-full bg-muted/30" />
+              <div className="h-3 w-full rounded-full bg-muted/20" />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="h-3 w-3/4 rounded-full bg-muted/30" />
+    </div>
   );
 }

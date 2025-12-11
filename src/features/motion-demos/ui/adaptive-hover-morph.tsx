@@ -102,6 +102,8 @@ function MorphingButton({
   idleShadow,
   onHoverChange,
 }: MorphingButtonProps) {
+  const iconDiameter = BUTTON_HEIGHT - 18;
+
   return (
     <motion.button
       type="button"
@@ -124,27 +126,34 @@ function MorphingButton({
         animate={{ opacity: isHovered ? 0.4 : 0.2 }}
         transition={{ duration: 0.4 }}
       />
-      <motion.span
-        className="relative z-10 flex items-center gap-2"
-        animate={{
-          opacity: isHovered ? 0 : 1,
-          y: isHovered ? -12 : 0,
-        }}
-        transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-      >
-        <span>Launch</span>
-        <ArrowRight className="h-4 w-4" />
-      </motion.span>
-      <motion.span
-        className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-slate-900"
-        animate={{
-          opacity: isHovered ? 1 : 0,
-          scale: isHovered ? 1 : 0.4,
-        }}
-        transition={{ type: "spring", stiffness: 280, damping: 22 }}
-      >
-        <Rocket className="h-4 w-4" />
-      </motion.span>
+      <div className="relative z-10 flex h-full w-full items-center justify-center">
+        <motion.span
+          className="absolute inset-0 flex items-center justify-center gap-2"
+          animate={{
+            opacity: isHovered ? 0 : 1,
+            y: isHovered ? -12 : 0,
+          }}
+          transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+        >
+          <span>Launch</span>
+          <ArrowRight className="h-4 w-4" />
+        </motion.span>
+        <motion.span
+          className="absolute inset-0 flex items-center justify-center"
+          animate={{
+            opacity: isHovered ? 1 : 0,
+            scale: isHovered ? 1 : 0.5,
+          }}
+          transition={{ type: "spring", stiffness: 280, damping: 22 }}
+        >
+          <span
+            className="flex items-center justify-center rounded-full bg-white/95 text-slate-900"
+            style={{ width: iconDiameter, height: iconDiameter }}
+          >
+            <Rocket className="h-4 w-4" />
+          </span>
+        </motion.span>
+      </div>
     </motion.button>
   );
 }
