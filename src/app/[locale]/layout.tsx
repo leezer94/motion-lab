@@ -3,6 +3,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { locales, type AppLocale, isSupportedLocale } from "@/i18n/routing";
+import { ChatWidget } from "@/widgets/chatbot";
 
 type LocaleLayoutProps = Readonly<{
   children: ReactNode;
@@ -27,6 +28,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
 
   return (
     <NextIntlClientProvider locale={locale as AppLocale} messages={messages}>
+      <ChatWidget />
       {children}
     </NextIntlClientProvider>
   );

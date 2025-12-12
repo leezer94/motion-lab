@@ -25,5 +25,5 @@ function QueryDevtools() {
   if (process.env.NODE_ENV !== "development") {
     return null;
   }
-  return <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-right" />;
+  return <ReactQueryDevtools initialIsOpen={false} buttonPosition="top-right" />;
 }
