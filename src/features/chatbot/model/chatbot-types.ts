@@ -6,6 +6,7 @@ export type ChatMatch = {
   kicker: string;
   description: string;
   tags: string[];
+  url?: string;
 };
 
 export type ChatbotMessage = {

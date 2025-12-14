@@ -1,6 +1,6 @@
 "use client";
 
-import { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, type FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useLocale } from "next-intl";
 import { useChatbot, type ChatbotMessage, type ChatMatch } from "@/features/chatbot";
@@ -157,14 +157,13 @@ type ChatHistoryProps = {
 
 function ChatHistory({ messages, isThinking, locale }: ChatHistoryProps) {
   const basePath = `/${locale}/motions`;
-
   return (
     <div className="max-h-[360px] space-y-4 overflow-y-auto pr-1">
       {messages.map((message) => (
         <div key={message.id} className="space-y-3">
           <ChatBubble message={message} />
           {message.matches && message.matches.length > 0 ? (
-            <ChatMatchList matches={message.matches} basePath={basePath} />
+            <ChatMatchList matches={message.matches} fallbackBasePath={basePath} />
           ) : null}
         </div>
       ))}
@@ -185,7 +184,7 @@ function ChatBubble({ message }: { message: ChatbotMessage }) {
             : "border-border/60 bg-card/80 text-foreground",
         )}
       >
-        <p className="whitespace-pre-line leading-relaxed">{message.content}</p>
+        <p className="leading-relaxed">{renderMessageWithLinks(message.content)}</p>
       </div>
     </div>
   );
@@ -206,10 +205,10 @@ function ThinkingBubble() {
 
 type ChatMatchListProps = {
   matches: ChatMatch[];
-  basePath: string;
+  fallbackBasePath: string;
 };
 
-function ChatMatchList({ matches, basePath }: ChatMatchListProps) {
+function ChatMatchList({ matches, fallbackBasePath }: ChatMatchListProps) {
   return (
     <ul className="space-y-2">
       {matches.map((match) => (
@@ -224,7 +223,7 @@ function ChatMatchList({ matches, basePath }: ChatMatchListProps) {
             <p className="text-sm font-semibold">{match.title}</p>
             <a
               className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary transition hover:text-primary/80"
-              href={`${basePath}/${match.slug}`}
+              href={match.url ?? `${fallbackBasePath}/${match.slug}`}
             >
               View
             </a>
@@ -311,4 +310,45 @@ function ChatInputForm({ value, onChange, onSubmit, disabled }: ChatInputFormPro
       </button>
     </form>
   );
+}
+
+const URL_PATTERN = /(https?:\/\/[^\s]+)/g;
+
+function renderMessageWithLinks(text: string) {
+  const lines = text.split("\n");
+
+  return lines.map((line, lineIndex) => (
+    <Fragment key={`line-${lineIndex}`}>
+      {lineIndex > 0 ? <br /> : null}
+      {line.split(URL_PATTERN).map((segment, segmentIndex) => {
+        if (!segment) {
+          return null;
+        }
+
+        const normalized = segment.trim();
+        const isUrl =
+          normalized.startsWith("http://") ||
+          normalized.startsWith("https://") ||
+          normalized.startsWith("www.");
+
+        if (!isUrl) {
+          return <Fragment key={`segment-${lineIndex}-${segmentIndex}`}>{segment}</Fragment>;
+        }
+
+        const href = normalized.startsWith("www.") ? `https://${normalized}` : normalized;
+        const displayText = href.replace(/^https?:\/\/[^/]+/, "") || href;
+        return (
+          <a
+            key={`link-${lineIndex}-${segmentIndex}`}
+            href={href}
+            className="break-all font-medium text-primary underline-offset-4 hover:underline"
+            target="_blank"
+            rel="noreferrer"
+          >
+            {displayText}
+          </a>
+        );
+      })}
+    </Fragment>
+  ));
 }

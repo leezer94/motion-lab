@@ -3,13 +3,15 @@
 from __future__ import annotations
 
 from typing import List
+import os
 
 import requests
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
-OLLAMA_ENDPOINT = "http://localhost:11434/api/chat"
-OLLAMA_MODEL = "qwen2.5"
+OLLAMA_ENDPOINT = os.environ.get("OLLAMA_ENDPOINT", "http://localhost:11434/api/chat")
+OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "qwen2.5")
+APP_BASE_URL = os.environ.get("APP_BASE_URL", "http://localhost:3000").rstrip("/")
 
 BASE_SYSTEM_PROMPT = """You are Motion Lab's UX/motion assistant.
 Reply **only in Korean** regardless of the user's language.
@@ -75,15 +77,15 @@ def rank_demos(query: str, limit: int = 3) -> List[dict]:
 
 def build_catalog_prompt(matches: List[dict], locale: str) -> str:
     lines = ["여기 추천 가능한 모션 데모 목록이 있어:"]
-    base_path = f"/{locale}/motions"
     for idx, demo in enumerate(matches, start=1):
+        full_url = f"{APP_BASE_URL}/{locale}/motions/{demo['slug']}"
         lines.append(
-            f"{idx}. {demo['title']} ({demo['kicker']})\\n"
-            f"   링크: {base_path}/{demo['slug']}\\n"
-            f"   설명: {demo['description']}\\n"
+            f"{idx}. {demo['title']} ({demo['kicker']})\n"
+            f"   링크: {full_url}\n"
+            f"   설명: {demo['description']}\n"
             f"   태그: {', '.join(demo['tags'])}"
         )
-    return "\\n".join(lines)
+    return "\n".join(lines)
 
 
 def call_ollama(messages: List[ChatMessage]) -> str:
@@ -114,6 +116,10 @@ def chat(request: ChatRequest):
     user_message = request.messages[-1].content
     matches = rank_demos(user_message, request.max_matches)
     catalog_prompt = build_catalog_prompt(matches, request.locale)
+    matches_with_links = [
+        {**match, "url": f"{APP_BASE_URL}/{request.locale}/motions/{match['slug']}"}
+        for match in matches
+    ]
 
     composed_messages = [
         ChatMessage(role="system", content=BASE_SYSTEM_PROMPT + "\n" + catalog_prompt),
@@ -121,7 +127,7 @@ def chat(request: ChatRequest):
     ]
 
     reply = call_ollama(composed_messages)
-    return ChatResponse(reply=reply, matches=matches)
+    return ChatResponse(reply=reply, matches=matches_with_links)
 
 
 if __name__ == "__main__":
