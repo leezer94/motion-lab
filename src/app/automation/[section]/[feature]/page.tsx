@@ -4,6 +4,10 @@ import {
   automationNavSections,
   getAutomationNavItem,
 } from "@/features/automation-nav/model/navigation";
+import { LogsPageContent } from "@/features/automation-logs";
+import { MemberPageContent } from "@/features/member-management";
+import { ExpensePageContent } from "@/features/expense-management";
+import { NotificationPageContent } from "@/features/notification-management";
 
 type AutomationRoutePageProps = {
   params: Promise<{
@@ -35,6 +39,45 @@ export default async function AutomationRoutePage({ params }: AutomationRoutePag
     notFound();
   }
 
+  // 모니터링 · 로그 페이지인 경우 LogsPageContent 사용
+  if (section === "operations" && feature === "logs") {
+    return <LogsPageContent />;
+  }
+
+  // 회원 관리 페이지인 경우 MemberPageContent 사용
+  if (section === "platform" && feature === "members") {
+    return <MemberPageContent />;
+  }
+
+  // 비용 관리 페이지인 경우 ExpensePageContent 사용
+  if (section === "platform" && feature === "expenses") {
+    return <ExpensePageContent />;
+  }
+
+  // 알림 발송 페이지인 경우 NotificationPageContent 사용
+  if (section === "operations" && feature === "notifications") {
+    return <NotificationPageContent />;
+  }
+
+  // 자동 출석 관리 페이지인 경우 AttendancePageContent 사용
+  if (section === "operations" && feature === "attendance") {
+    const { AttendancePageContent } = await import("@/features/attendance-management");
+    return <AttendancePageContent />;
+  }
+
+  // 강의 일정 스케줄링 페이지인 경우 SchedulingPageContent 사용
+  if (section === "operations" && feature === "scheduling") {
+    const { SchedulingPageContent } = await import("@/features/scheduling-management");
+    return <SchedulingPageContent />;
+  }
+
+  // 강의 신청 승인 페이지인 경우 ApprovalPageContent 사용
+  if (section === "platform" && feature === "approval") {
+    const { ApprovalPageContent } = await import("@/features/approval-management");
+    return <ApprovalPageContent />;
+  }
+
+  // 기본 프로토타입 페이지
   return (
     <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-slate-100 backdrop-blur">
       <p className="text-xs uppercase tracking-[0.4em] text-emerald-200">{navItem.title}</p>

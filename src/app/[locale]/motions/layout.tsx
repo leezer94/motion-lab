@@ -18,10 +18,11 @@ export default function MotionLayout({ children }: MotionLayoutProps) {
   const locale = useLocale();
   const layoutTranslations = useTranslations("motionLayout");
   const demoTranslations = useTranslations("demos");
-  const normalizedPathname =
-    pathname.startsWith(`/${locale}`) && pathname.length > locale.length + 1
-      ? pathname.slice(locale.length + 1)
-      : pathname;
+
+  // pathname 정규화: locale prefix 제거
+  const normalizedPathname = pathname.startsWith(`/${locale}`)
+    ? pathname.slice(locale.length + 1)
+    : pathname;
 
   const overviewCopy = {
     label: layoutTranslations("overviewLabel"),

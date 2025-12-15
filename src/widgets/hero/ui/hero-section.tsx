@@ -25,7 +25,7 @@ export function HeroSection() {
         {hero("subheading")}
       </p>
       <div className="flex flex-wrap items-center justify-center gap-4 sm:justify-start">
-        <Button asChild>
+        <Button asChild variant="ghost">
           <Link href={primaryCta.href} target={primaryCta.target}>
             {hero("primaryCtaLabel")}
           </Link>
@@ -35,7 +35,7 @@ export function HeroSection() {
             {hero("secondaryCtaLabel")}
           </Link>
         </Button>
-        <Button asChild variant="ghost">
+        <Button asChild>
           <Link href={tertiaryCta.href} target={tertiaryCta.target}>
             {hero("tertiaryCtaLabel")}
           </Link>
