@@ -8,5 +8,9 @@ export const siteConfig = {
       href: "https://nextjs.org/docs",
       target: "_blank",
     },
+    tertiaryCta: {
+      href: "/automation/design/dashboard",
+      target: "_blank",
+    },
   },
 };
