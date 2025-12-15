@@ -95,7 +95,12 @@ def call_ollama(messages: List[ChatMessage]) -> str:
         "stream": False,
     }
     try:
-        response = requests.post(OLLAMA_ENDPOINT, json=payload, timeout=60)
+        response = requests.post(
+            OLLAMA_ENDPOINT,
+            json=payload,
+            timeout=60,
+            headers={"ngrok-skip-browser-warning": "1"},
+        )
         response.raise_for_status()
     except requests.RequestException as exc:
         raise HTTPException(status_code=502, detail=f"Ollama error: {exc}") from exc
