@@ -10,13 +10,14 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
 OLLAMA_ENDPOINT = os.environ.get("OLLAMA_ENDPOINT", "http://localhost:11434/api/chat")
-OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "qwen2.5")
+OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "qwen2.5-3b-ko:latest")
 APP_BASE_URL = os.environ.get("APP_BASE_URL", "http://localhost:3000").rstrip("/")
 
-BASE_SYSTEM_PROMPT = """You are Motion Lab's UX/motion assistant.
-Reply **only in Korean** regardless of the user's language.
-Use the supplied motion demo catalog to answer questions and include the `/[locale]/motions/...` links.
-If nothing matches, say so clearly and propose a new experiment idea, also in Korean.
+BASE_SYSTEM_PROMPT = """
+당신은 Motion Lab의 UX/Motion 어시스턴트다.
+사용자가 어떤 언어로 질문하더라도 **반드시 한국어로만** 답변해야 한다.
+제공된 모션 데모 목록을 참고해 `/[locale]/motions/...` 링크와 간단한 설명, 태그를 함께 제공하라.
+적절한 데모가 없다면 "새로운 실험 아이디어"를 한국어로 제안하라.
 """
 
 MOTION_DEMOS = [

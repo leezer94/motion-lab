@@ -8,7 +8,7 @@ import { useTranslations } from "next-intl";
 
 export function HeroSection() {
   const hero = useTranslations("hero");
-  const { primaryCta, secondaryCta } = siteConfig.hero;
+  const { primaryCta, secondaryCta, tertiaryCta } = siteConfig.hero;
 
   return (
     <motion.div
@@ -33,6 +33,11 @@ export function HeroSection() {
         <Button asChild variant="secondary">
           <Link href={secondaryCta.href} target={secondaryCta.target}>
             {hero("secondaryCtaLabel")}
+          </Link>
+        </Button>
+        <Button asChild variant="ghost">
+          <Link href={tertiaryCta.href} target={tertiaryCta.target}>
+            {hero("tertiaryCtaLabel")}
           </Link>
         </Button>
       </div>
