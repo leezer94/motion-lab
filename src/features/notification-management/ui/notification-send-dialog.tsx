@@ -81,7 +81,7 @@ export function NotificationSendDialog({ isOpen, onClose, type }: NotificationSe
         setSubmitStatus("idle");
         onClose();
       }, 2000);
-    } catch (error) {
+    } catch {
       setSubmitStatus("error");
     }
   };
@@ -144,7 +144,10 @@ export function NotificationSendDialog({ isOpen, onClose, type }: NotificationSe
               {/* Content */}
               <div
                 className="overflow-y-auto px-6 py-6"
-                style={{ maxHeight: "calc(90vh - 140px)" }}
+                style={{
+                  maxHeight: "calc(90vh - 140px)",
+                  scrollbarGutter: "stable",
+                }}
               >
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   {/* 템플릿 선택 */}
