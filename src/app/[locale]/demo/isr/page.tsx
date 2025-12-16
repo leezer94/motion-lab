@@ -18,6 +18,9 @@ export default async function ISRDemoPage() {
   // 타임스탬프 기반 값 (재생성마다 다름, 순수 함수 규칙 준수)
   const uniqueNumber = Number.parseInt(renderTime.slice(-6).replace(/[-:T]/g, ""), 10) % 1000;
 
+  // 개발 환경인지 확인
+  const isDevelopment = process.env.NODE_ENV === "development";
+
   // 외부 API 호출 (revalidate 주기에 따라 재생성)
   const response = await fetch("https://api.github.com/repos/vercel/next.js", {
     next: { revalidate: 10 }, // 10초마다 재생성
@@ -48,6 +51,12 @@ export default async function ISRDemoPage() {
                 <span className="font-mono font-semibold text-emerald-300">10초</span>
               </div>
               <div className="flex items-center justify-between rounded-lg bg-white/5 px-4 py-3">
+                <span className="text-slate-300">환경:</span>
+                <span className="font-mono font-semibold text-emerald-300">
+                  {isDevelopment ? "개발 (dev)" : "프로덕션 (build)"}
+                </span>
+              </div>
+              <div className="flex items-center justify-between rounded-lg bg-white/5 px-4 py-3">
                 <span className="text-slate-300">렌더링 시간:</span>
                 <span className="font-mono text-sm text-emerald-300">{renderTime}</span>
               </div>
@@ -55,10 +64,69 @@ export default async function ISRDemoPage() {
                 <span className="text-slate-300">고유 숫자:</span>
                 <span className="font-mono font-semibold text-emerald-300">{uniqueNumber}</span>
               </div>
-              <div className="mt-4 rounded-lg bg-emerald-500/20 px-4 py-3 text-sm text-emerald-300">
-                💡 이 페이지는 10초마다 자동으로 재생성됩니다. 새로고침하면 최신 데이터를 볼 수
-                있습니다.
-              </div>
+              {isDevelopment ? (
+                <div className="mt-4 rounded-lg bg-yellow-500/10 px-4 py-3 text-sm text-yellow-300">
+                  ⚠️ 개발 환경(`next dev`)에서는 ISR이 SSR처럼 동작합니다. 매 요청마다 렌더링되어
+                  시간이 계속 변합니다.
+                  <br />
+                  <br />
+                  진짜 ISR을 보려면{" "}
+                  <code className="rounded bg-yellow-500/20 px-1">npm run build</code> 후{" "}
+                  <code className="rounded bg-yellow-500/20 px-1">npm start</code>를 실행하세요.
+                  <br />
+                  <br />
+                  프로덕션에서는:
+                  <br />• 10초 이내: 같은 캐시된 페이지 반환 (시간 고정)
+                  <br />• 10초 후: 백그라운드 재생성, 기존 페이지 계속 제공
+                  <br />• 재생성 완료: 새 페이지로 교체
+                </div>
+              ) : (
+                <div className="mt-4 space-y-3 rounded-lg bg-emerald-500/20 px-4 py-3 text-sm text-emerald-300">
+                  <div>💡 이 페이지는 10초마다 자동으로 재생성됩니다.</div>
+                  <div className="border-t border-emerald-400/20 pt-3">
+                    <strong>ISR 정확한 동작 방식:</strong>
+                    <br />
+                    <br />
+                    <strong>1️⃣ 첫 요청 (예: 00:00:00)</strong>
+                    <br />
+                    → 페이지 생성 및 캐시
+                    <br />→ 렌더링 시간: <code>00:00:00</code>
+                    <br />
+                    <br />
+                    <strong>2️⃣ 0~9초 사이 새로고침</strong>
+                    <br />
+                    → 캐시된 페이지 반환
+                    <br />→ 렌더링 시간: <strong>여전히 00:00:00</strong> (변하지 않음) ✅
+                    <br />
+                    <br />
+                    <strong>3️⃣ 10초 후 첫 요청 (예: 00:00:10)</strong>
+                    <br />
+                    → 백그라운드에서 재생성 시작
+                    <br />
+                    → 기존 페이지는 계속 제공 (시간: 00:00:00 유지)
+                    <br />
+                    → 재생성 완료 후 새 페이지로 교체
+                    <br />→ 렌더링 시간: <strong>00:00:10</strong> (변경됨) ✅
+                    <br />
+                    <br />
+                    <strong>4️⃣ 10~19초 사이 새로고침</strong>
+                    <br />
+                    → 새로 캐시된 페이지 반환
+                    <br />→ 렌더링 시간: <strong>00:00:10</strong> (변하지 않음) ✅
+                    <br />
+                    <br />
+                    <div className="mt-3 rounded bg-emerald-600/20 p-2">
+                      <strong>🧪 테스트 방법:</strong>
+                      <br />• 즉시 새로고침 (1~9초) → 시간 <strong>동일</strong>해야 함
+                      <br />• 10초 이상 기다린 후 새로고침 → 시간 <strong>변경</strong>되어야 함
+                      <br />
+                      <br />
+                      ⚠️ 만약 10초 이내에 새로고침해도 시간이 변한다면, ISR 캐시가 작동하지 않는
+                      것입니다.
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -82,9 +150,16 @@ export default async function ISRDemoPage() {
                   {repoData.forks_count?.toLocaleString()}
                 </span>
               </div>
-              <div className="mt-4 rounded-lg bg-emerald-500/20 px-4 py-3 text-sm text-emerald-300">
-                💡 이 데이터는 10초마다 자동으로 업데이트됩니다.
-              </div>
+              {isDevelopment ? (
+                <div className="mt-4 rounded-lg bg-yellow-500/10 px-4 py-3 text-sm text-yellow-300">
+                  ⚠️ 개발 환경에서는 매 요청마다 API를 호출합니다. 프로덕션에서는 10초마다
+                  업데이트됩니다.
+                </div>
+              ) : (
+                <div className="mt-4 rounded-lg bg-emerald-500/20 px-4 py-3 text-sm text-emerald-300">
+                  💡 이 데이터는 10초마다 자동으로 업데이트됩니다.
+                </div>
+              )}
             </div>
           </div>
 
