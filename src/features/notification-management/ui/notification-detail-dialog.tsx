@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X, Mail, MessageSquare, Calendar, Clock, Users, CheckCircle, XCircle } from "lucide-react";
 import { cn } from "@/design-system/utils/cn";
@@ -19,6 +20,17 @@ export function NotificationDetailDialog({
   isOpen,
   onClose,
 }: NotificationDetailDialogProps) {
+  // 다이얼로그 열림/닫힘에 따라 body 스크롤 제어
+  useEffect(() => {
+    if (isOpen) {
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = originalStyle;
+      };
+    }
+  }, [isOpen]);
+
   if (!notification || !isOpen) return null;
 
   const getStatusConfig = (status: ScheduledNotification["status"]) => {

@@ -37,6 +37,17 @@ export function NotificationSendDialog({ isOpen, onClose, type }: NotificationSe
     setValue("type", type);
   }, [type, setValue]);
 
+  // 다이얼로그 열림/닫힘에 따라 body 스크롤 제어
+  useEffect(() => {
+    if (isOpen) {
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = originalStyle;
+      };
+    }
+  }, [isOpen]);
+
   const selectedTemplateId = watchValues.templateId;
 
   // 템플릿 선택 시 내용 자동 채우기

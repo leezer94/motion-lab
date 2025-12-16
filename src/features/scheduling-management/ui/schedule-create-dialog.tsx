@@ -85,6 +85,19 @@ export function ScheduleCreateDialog({ isOpen, onClose, onSubmit }: ScheduleCrea
     }
   }, [watchValues.platformId, setValue]);
 
+  // 다이얼로그 열림/닫힘에 따라 body 스크롤 제어
+  useEffect(() => {
+    if (isOpen) {
+      // 다이얼로그가 열릴 때 body 스크롤 막기
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        // 다이얼로그가 닫힐 때 원래 상태로 복원
+        document.body.style.overflow = originalStyle;
+      };
+    }
+  }, [isOpen]);
+
   // 충돌 체크 (간단한 예시)
   const checkConflicts = async () => {
     // 실제로는 서버에서 충돌을 체크해야 함

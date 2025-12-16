@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useForm } from "react-hook-form";
 import { X } from "lucide-react";
@@ -47,6 +48,17 @@ export function ApplicationDialog({
     reset();
     onClose();
   };
+
+  // 다이얼로그 열림/닫힘에 따라 body 스크롤 제어
+  useEffect(() => {
+    if (isOpen) {
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = originalStyle;
+      };
+    }
+  }, [isOpen]);
 
   if (!course) return null;
 
