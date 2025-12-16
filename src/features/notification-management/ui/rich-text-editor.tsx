@@ -46,10 +46,11 @@ export function RichTextEditor({
             // CSS 로드 실패 시 무시 (중복 catch는 무시)
           }),
       ]).finally(() => {
-        // 약간의 지연을 두어 DOM이 완전히 준비된 후 마운트
-        setTimeout(() => {
+        // 최소한의 지연만 두어 빠른 마운트 (UI shifting 최소화)
+        // requestAnimationFrame을 사용하여 다음 프레임에 마운트
+        requestAnimationFrame(() => {
           setIsMounted(true);
-        }, 100);
+        });
       });
     }
   }, []);
@@ -106,31 +107,56 @@ export function RichTextEditor({
   ];
 
   // Fallback 에디터 (에러 발생 시 또는 로딩 중)
-  const FallbackEditor = () => (
-    <div className={cn("rounded-xl border border-white/10 bg-white/5", className)}>
-      <textarea
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        rows={10}
-        className="w-full rounded-xl border-0 bg-transparent px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:outline-none min-h-[200px]"
-      />
-      {hasError && (
-        <p className="px-4 pb-3 text-xs text-slate-400">
-          리치 텍스트 에디터를 로드할 수 없어 기본 에디터를 사용합니다.
-        </p>
+  const FallbackEditor = ({ isLoading = false }: { isLoading?: boolean }) => (
+    <div className={cn("rounded-xl border border-white/10 bg-white/5", "min-h-[280px]", className)}>
+      {isLoading ? (
+        <div className="flex h-[280px] flex-col">
+          {/* 툴바 스켈레톤 */}
+          <div className="flex items-center gap-2 border-b border-white/10 bg-white/5 px-4 py-3">
+            <div className="h-6 w-6 rounded bg-white/10" />
+            <div className="h-6 w-6 rounded bg-white/10" />
+            <div className="h-6 w-6 rounded bg-white/10" />
+            <div className="ml-auto h-6 w-6 rounded bg-white/10" />
+          </div>
+          {/* 에디터 영역 스켈레톤 */}
+          <div className="flex-1 px-4 py-3">
+            <div className="h-4 w-3/4 rounded bg-white/5 mb-2" />
+            <div className="h-4 w-1/2 rounded bg-white/5" />
+          </div>
+        </div>
+      ) : (
+        <>
+          <textarea
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder={placeholder}
+            rows={10}
+            className="w-full rounded-xl border-0 bg-transparent px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:outline-none min-h-[200px]"
+          />
+          {hasError && (
+            <p className="px-4 pb-3 text-xs text-slate-400">
+              리치 텍스트 에디터를 로드할 수 없어 기본 에디터를 사용합니다.
+            </p>
+          )}
+        </>
       )}
     </div>
   );
 
-  if (hasError || !isMounted) {
+  if (hasError) {
     return <FallbackEditor />;
+  }
+
+  if (!isMounted) {
+    return <FallbackEditor isLoading />;
   }
 
   // ReactQuill 렌더링 시도
   try {
     return (
-      <div className={cn("rounded-xl border border-white/10 bg-white/5", className)}>
+      <div
+        className={cn("rounded-xl border border-white/10 bg-white/5", "min-h-[280px]", className)}
+      >
         <ReactQuill
           theme="snow"
           value={value}
@@ -138,7 +164,7 @@ export function RichTextEditor({
           modules={modules}
           formats={formats}
           placeholder={placeholder}
-          className="[&_.ql-editor]:min-h-[200px] [&_.ql-editor]:text-white [&_.ql-editor]:placeholder:text-slate-500 [&_.ql-container]:border-0 [&_.ql-toolbar]:border-b [&_.ql-toolbar]:border-white/10 [&_.ql-toolbar]:bg-white/5 [&_.ql-toolbar_.ql-stroke]:stroke-slate-300 [&_.ql-toolbar_.ql-fill]:fill-slate-300 [&_.ql-toolbar_button:hover_.ql-stroke]:stroke-white [&_.ql-toolbar_button:hover_.ql-fill]:fill-white [&_.ql-toolbar_button.ql-active_.ql-stroke]:stroke-emerald-300 [&_.ql-toolbar_button.ql-active_.ql-fill]:fill-emerald-300"
+          className="[&_.ql-container]:min-h-[280px] [&_.ql-editor]:min-h-[200px] [&_.ql-editor]:text-white [&_.ql-editor]:placeholder:text-slate-500 [&_.ql-container]:border-0 [&_.ql-toolbar]:border-b [&_.ql-toolbar]:border-white/10 [&_.ql-toolbar]:bg-white/5 [&_.ql-toolbar]:rounded-t-xl [&_.ql-toolbar_.ql-stroke]:stroke-slate-300 [&_.ql-toolbar_.ql-fill]:fill-slate-300 [&_.ql-toolbar_button:hover_.ql-stroke]:stroke-white [&_.ql-toolbar_button:hover_.ql-fill]:fill-white [&_.ql-toolbar_button.ql-active_.ql-stroke]:stroke-emerald-300 [&_.ql-toolbar_button.ql-active_.ql-fill]:fill-emerald-300 [&_.ql-editor]:rounded-b-xl"
         />
       </div>
     );

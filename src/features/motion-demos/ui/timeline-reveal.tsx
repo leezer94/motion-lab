@@ -53,9 +53,6 @@ export function TimelineReveal() {
       scale: 1,
       transition: { type: "spring" as const, stiffness: 220, damping: 28 },
     },
-  };
-
-  const hoverVariants = {
     rest: { scale: 1, y: 0 },
     hover: { scale: 1.02, y: -4 },
   };
