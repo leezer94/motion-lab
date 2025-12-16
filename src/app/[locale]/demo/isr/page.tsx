@@ -14,7 +14,10 @@ export const revalidate = 10; // 10초마다 재생성
 
 export default async function ISRDemoPage() {
   // ISR: 주기적으로 재생성되는 데이터
+  // 이 값은 페이지가 재생성될 때만 변경됩니다
   const renderTime = new Date().toISOString();
+  // 타임스탬프는 renderTime에서 추출 (순수 함수 규칙 준수)
+  const renderTimestamp = new Date(renderTime).getTime();
   // 타임스탬프 기반 값 (재생성마다 다름, 순수 함수 규칙 준수)
   const uniqueNumber = Number.parseInt(renderTime.slice(-6).replace(/[-:T]/g, ""), 10) % 1000;
 
@@ -64,6 +67,41 @@ export default async function ISRDemoPage() {
                 <span className="text-slate-300">고유 숫자:</span>
                 <span className="font-mono font-semibold text-emerald-300">{uniqueNumber}</span>
               </div>
+              <div className="flex items-center justify-between rounded-lg bg-white/5 px-4 py-3">
+                <span className="text-slate-300">렌더링 타임스탬프:</span>
+                <span className="font-mono text-xs text-emerald-300">{renderTimestamp}</span>
+              </div>
+              {!isDevelopment && (
+                <div className="mt-4 rounded-lg bg-blue-500/10 px-4 py-3 text-xs text-blue-300">
+                  <strong>🔍 ISR 캐시 검증 방법:</strong>
+                  <br />
+                  <br />
+                  <strong>1단계: 첫 로드</strong>
+                  <br />• 현재 렌더링 시간을 기록하세요: <code>{renderTime}</code>
+                  <br />• 타임스탬프: <code>{renderTimestamp}</code>
+                  <br />
+                  <br />
+                  <strong>2단계: 즉시 새로고침 (1~9초 이내)</strong>
+                  <br />
+                  • F5 또는 Cmd+R로 새로고침
+                  <br />• 렌더링 시간이 <strong>동일하면</strong> → ISR 캐시 작동 ✅
+                  <br />• 렌더링 시간이 <strong>변하면</strong> → ISR 캐시 미작동 ❌
+                  <br />
+                  <br />
+                  <strong>3단계: 10초 후 새로고침</strong>
+                  <br />
+                  • 10초 이상 기다린 후 새로고침
+                  <br />• 렌더링 시간이 <strong>변경되어야</strong> 함 (재생성 확인)
+                  <br />
+                  <br />
+                  <strong>⚠️ 중요:</strong>
+                  <br />
+                  • 브라우저 개발자 도구에서 &quot;Disable cache&quot;를 체크하면 안 됩니다
+                  <br />
+                  • 일반 새로고침(F5)으로 테스트하세요
+                  <br />• 하드 리프레시(Cmd+Shift+R)는 캐시를 무시합니다
+                </div>
+              )}
               {isDevelopment ? (
                 <div className="mt-4 rounded-lg bg-yellow-500/10 px-4 py-3 text-sm text-yellow-300">
                   ⚠️ 개발 환경(`next dev`)에서는 ISR이 SSR처럼 동작합니다. 매 요청마다 렌더링되어
